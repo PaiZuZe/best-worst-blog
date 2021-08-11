@@ -14,7 +14,7 @@ public class Bob implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     private String name;
     private String nickname;
@@ -44,11 +44,28 @@ public class Bob implements Serializable {
         this.name = name;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj.getClass() != this.getClass()) {
+            return false;
+        }
+        Bob other_bob = (Bob) obj;
+        return other_bob.getId().longValue() == this.getId().longValue();
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getId() != null ? this.getId().hashCode() : 0;
     }
 }
