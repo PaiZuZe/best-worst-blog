@@ -20,20 +20,20 @@ public class BobController {
 
     @GetMapping
     public ResponseEntity<List<Bob>> getAll() {
-        return new ResponseEntity<List<Bob>>(bobRepository.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(bobRepository.findAll(), HttpStatus.OK);
     }
 
 
     @GetMapping("/{id}")
     public ResponseEntity<Bob> getById(@PathVariable long id) {
         Optional<Bob> bob = bobRepository.findById(id);
-        return bob.isPresent() ? new ResponseEntity<Bob>(bob.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return bob.isPresent() ? new ResponseEntity<>(bob.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping
     public ResponseEntity<Bob> post(@RequestBody Bob new_bob) {
         new_bob = bobRepository.save(new_bob);
-        return new ResponseEntity<Bob>(new_bob, HttpStatus.CREATED);
+        return new ResponseEntity<>(new_bob, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -42,7 +42,7 @@ public class BobController {
         if (bob.isPresent()) {
             changed_bob.setId(bob.get().getId());
             changed_bob = bobRepository.save(changed_bob);
-            return new ResponseEntity<Bob>(changed_bob, HttpStatus.OK);
+            return new ResponseEntity<>(changed_bob, HttpStatus.OK);
         }
         else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

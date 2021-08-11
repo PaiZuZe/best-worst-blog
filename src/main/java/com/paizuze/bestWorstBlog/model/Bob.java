@@ -2,12 +2,14 @@ package com.paizuze.bestWorstBlog.model;
 
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "bobs")
 public class Bob implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
