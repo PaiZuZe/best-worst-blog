@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -17,20 +18,26 @@ public class BobController {
     @Autowired
     private BobRepository bobRepository;
 
+    @GetMapping
+    public ResponseEntity<List<Bob>> getAll() {
+        return new ResponseEntity<List<Bob>>(bobRepository.findAll(), HttpStatus.OK);
+    }
+
+
     @GetMapping("/{id}")
-    public ResponseEntity<Bob> GetById(@PathVariable long id) {
+    public ResponseEntity<Bob> getById(@PathVariable long id) {
         Optional<Bob> bob = bobRepository.findById(id);
         return bob.isPresent() ? new ResponseEntity<Bob>(bob.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping
-    public ResponseEntity<Bob> Post(@RequestBody Bob new_bob) {
+    public ResponseEntity<Bob> post(@RequestBody Bob new_bob) {
         new_bob = bobRepository.save(new_bob);
         return new ResponseEntity<Bob>(new_bob, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Bob> PutByID(@PathVariable long id, @RequestBody Bob changed_bob){
+    public ResponseEntity<Bob> putByID(@PathVariable long id, @RequestBody Bob changed_bob){
         Optional<Bob> bob = bobRepository.findById(id);
         if (bob.isPresent()) {
             changed_bob.setId(bob.get().getId());
@@ -43,7 +50,7 @@ public class BobController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> DelByID(@PathVariable long id) {
+    public ResponseEntity<?> deleteById(@PathVariable long id) {
         Optional<Bob> bob = bobRepository.findById(id);
         if (bob.isPresent()) {
             bobRepository.deleteById(id);
