@@ -1,9 +1,15 @@
 package com.paizuze.bestWorstBlog.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Entity
 @Table(name = "blogPosts")
 public class BlogPost implements Serializable {
@@ -17,6 +23,9 @@ public class BlogPost implements Serializable {
 
     private String title;
     private String textBody;
+
+    @ManyToOne
+    private Author author;
 
     public BlogPost() {
     }
@@ -65,5 +74,13 @@ public class BlogPost implements Serializable {
     @Override
     public int hashCode() {
         return this.getId() != null ? this.getId().hashCode() : 0;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 }

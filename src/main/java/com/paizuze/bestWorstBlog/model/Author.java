@@ -1,9 +1,16 @@
 package com.paizuze.bestWorstBlog.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Set;
 
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Entity
 @Table(name = "authors")
 public class Author implements Serializable {
@@ -17,6 +24,9 @@ public class Author implements Serializable {
 
     private String firstName;
     private String lastName;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "author")
+    private Set<BlogPost> blogPosts;
 
     public Author() {
     }
@@ -65,5 +75,13 @@ public class Author implements Serializable {
     @Override
     public int hashCode() {
         return this.getId() != null ? this.getId().hashCode() : 0;
+    }
+
+    public Set<BlogPost> getBlogPosts() {
+        return blogPosts;
+    }
+
+    public void setBlogPosts(Set<BlogPost> blogPosts) {
+        this.blogPosts = blogPosts;
     }
 }

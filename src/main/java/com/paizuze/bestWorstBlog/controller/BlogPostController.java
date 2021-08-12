@@ -33,8 +33,8 @@ public class BlogPostController {
     }
 
     @PostMapping
-    public ResponseEntity<BlogPost> create(@RequestBody BlogPost newBlogPost) {
-        return blogPostService.create(newBlogPost);
+    public ResponseEntity<BlogPost> create(@RequestBody BlogPost newBlogPost, @RequestParam("author_id") long author_id) {
+        return blogPostService.create(newBlogPost, author_id);
     }
 
     @DeleteMapping("/{id}")

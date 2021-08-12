@@ -1,6 +1,8 @@
 package com.paizuze.bestWorstBlog.service;
 
+import com.paizuze.bestWorstBlog.model.Author;
 import com.paizuze.bestWorstBlog.model.BlogPost;
+import com.paizuze.bestWorstBlog.repository.AuthorRepository;
 import com.paizuze.bestWorstBlog.repository.BlogPostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +19,9 @@ public class BlogPostService {
     @Autowired
     private BlogPostRepository blogPostRepository;
 
+    @Autowired
+    private AuthorRepository authorRepository;
+
     public ResponseEntity<Page<BlogPost>> getPage(Pageable pageable) {
         return new ResponseEntity<>(blogPostRepository.findAll(pageable), HttpStatus.OK);
     }
@@ -30,7 +35,12 @@ public class BlogPostService {
         return blogPost.isPresent() ? new ResponseEntity<>(blogPost.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    public ResponseEntity<BlogPost> create(BlogPost newBlogPost) {
+    public ResponseEntity<BlogPost> create(BlogPost newBlogPost, long author_id) {
+        Optional<Author> author = authorRepository.findById(author_id);
+        if (author.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        newBlogPost.setAuthor(author.get());
         newBlogPost = blogPostRepository.save(newBlogPost);
         return new ResponseEntity<>(newBlogPost, HttpStatus.CREATED);
     }
