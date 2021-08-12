@@ -20,7 +20,7 @@ public class BlogPostController {
     private BlogPostRepository blogPostRepository;
 
     @GetMapping("/pages")
-    public ResponseEntity<Page<BlogPost>> getWithPages(Pageable pageable) {
+    public ResponseEntity<Page<BlogPost>> getPage(Pageable pageable) {
         return new ResponseEntity<>(blogPostRepository.findAll(pageable), HttpStatus.OK);
     }
 

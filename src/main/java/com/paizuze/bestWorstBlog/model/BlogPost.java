@@ -15,14 +15,14 @@ public class BlogPost implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String tittle;
+    private String title;
     private String textBody;
 
     public BlogPost() {
     }
 
-    public BlogPost(String tittle, String textBody) {
-        this.tittle = tittle;
+    public BlogPost(String title, String textBody) {
+        this.title = title;
         this.textBody = textBody;
     }
 
@@ -34,12 +34,12 @@ public class BlogPost implements Serializable {
         this.id = id;
     }
 
-    public String getTittle() {
-        return tittle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTittle(String tittle) {
-        this.tittle = tittle;
+    public void setTitle(String tittle) {
+        this.title = tittle;
     }
 
     public String getTextBody() {
