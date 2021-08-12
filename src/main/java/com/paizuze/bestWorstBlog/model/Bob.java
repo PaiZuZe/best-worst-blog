@@ -19,11 +19,6 @@ public class Bob implements Serializable {
     private String name;
     private String nickname;
 
-    public Bob(String name, String nickname) {
-        this.name = name;
-        this.nickname = nickname;
-    }
-
     public Bob() {
 
     }

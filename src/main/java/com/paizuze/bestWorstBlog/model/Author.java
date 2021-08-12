@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Set;
 
 @JsonIdentityInfo(
@@ -25,15 +26,12 @@ public class Author implements Serializable {
     private String firstName;
     private String lastName;
 
+    private BigDecimal balance = new BigDecimal("0.0");
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "author")
     private Set<BlogPost> blogPosts;
 
     public Author() {
-    }
-
-    public Author(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
     }
 
     public Long getId() {
@@ -83,5 +81,13 @@ public class Author implements Serializable {
 
     public void setBlogPosts(Set<BlogPost> blogPosts) {
         this.blogPosts = blogPosts;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
     }
 }

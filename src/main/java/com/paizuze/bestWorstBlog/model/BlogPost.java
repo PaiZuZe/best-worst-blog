@@ -30,11 +30,6 @@ public class BlogPost implements Serializable {
     public BlogPost() {
     }
 
-    public BlogPost(String title, String textBody) {
-        this.title = title;
-        this.textBody = textBody;
-    }
-
     public Long getId() {
         return id;
     }

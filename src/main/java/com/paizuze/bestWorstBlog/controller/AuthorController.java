@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -45,5 +46,10 @@ public class AuthorController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable long id){
         return authorService.deleteById(id);
+    }
+
+    @PostMapping("/{id}/donate")
+    public ResponseEntity<?> donate(@PathVariable long id, @RequestParam("donation_amount") BigDecimal donationAmount) {
+        return authorService.donate(id, donationAmount);
     }
 }
