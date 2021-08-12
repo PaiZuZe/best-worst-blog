@@ -21,7 +21,7 @@ public class BobController {
     private BobRepository bobRepository;
 
     @GetMapping(value ="/pages")
-    public Page getPage(Pageable pageable) {
+    public Page<Bob> getPage(Pageable pageable) {
         return bobRepository.findAll(pageable);
     }
 
@@ -67,5 +67,4 @@ public class BobController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
 }
