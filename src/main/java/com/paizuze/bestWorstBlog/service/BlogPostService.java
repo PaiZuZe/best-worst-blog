@@ -49,6 +49,8 @@ public class BlogPostService {
         Optional<BlogPost> blogPost = blogPostRepository.findById(id);
         if (blogPost.isPresent()) {
             changed_blogPost.setId(blogPost.get().getId());
+            changed_blogPost.setAuthor(blogPost.get().getAuthor());
+            blogPostRepository.save(changed_blogPost);
             return new ResponseEntity<>(changed_blogPost, HttpStatus.OK);
         }
         else {
