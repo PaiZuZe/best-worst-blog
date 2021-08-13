@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -22,13 +23,21 @@ public class Author implements Serializable {
     private String firstName;
     private String lastName;
 
-    private BigDecimal balance = new BigDecimal("0.0");
+    private BigDecimal balance;
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "author")
     private Set<BlogPost> blogPosts;
 
     public Author() {
+        this.setBalance(new BigDecimal("0.0"));
+        this.setBlogPosts(new HashSet<>());
+    }
+
+    public Author(String firstName, String lastName) {
+        this();
+        this.setFirstName(firstName);
+        this.setLastName(lastName);
     }
 
     public Long getId() {

@@ -24,6 +24,12 @@ public class BlogPost implements Serializable {
     public BlogPost() {
     }
 
+    public BlogPost(String title, String textBody) {
+        this();
+        this.setTitle(title);
+        this.setTextBody(textBody);
+    }
+
     public Long getId() {
         return id;
     }

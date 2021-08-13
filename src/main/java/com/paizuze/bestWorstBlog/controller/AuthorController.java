@@ -1,5 +1,6 @@
 package com.paizuze.bestWorstBlog.controller;
 
+import com.paizuze.bestWorstBlog.dto.AuthorDTOIn;
 import com.paizuze.bestWorstBlog.model.Author;
 import com.paizuze.bestWorstBlog.model.BlogPost;
 import com.paizuze.bestWorstBlog.service.AuthorService;
@@ -41,13 +42,13 @@ public class AuthorController {
     }
 
     @PostMapping
-    public ResponseEntity<Author> post(@RequestBody Author new_author) {
-        return authorService.post(new_author);
+    public ResponseEntity<Author> post(@RequestBody AuthorDTOIn new_author) {
+        return authorService.post(new_author.toAuthor());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Author> putById(@PathVariable long id, @RequestBody Author changed_author) {
-        return authorService.putById(id, changed_author);
+    public ResponseEntity<Author> putById(@PathVariable long id, @RequestBody AuthorDTOIn changed_author) {
+        return authorService.putById(id, changed_author.toAuthor());
     }
 
     @DeleteMapping("/{id}")

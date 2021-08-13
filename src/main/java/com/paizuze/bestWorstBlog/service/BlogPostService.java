@@ -35,7 +35,7 @@ public class BlogPostService {
         return blogPost.isPresent() ? new ResponseEntity<>(blogPost.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    public ResponseEntity<BlogPost> create(BlogPost newBlogPost, long author_id) {
+    public ResponseEntity<BlogPost> create(long author_id, BlogPost newBlogPost) {
         Optional<Author> author = authorRepository.findById(author_id);
         if (author.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -45,22 +45,22 @@ public class BlogPostService {
         return new ResponseEntity<>(newBlogPost, HttpStatus.CREATED);
     }
 
-    public ResponseEntity<?> deleteById(long id) {
+    public ResponseEntity<BlogPost> putById(long id, BlogPost changed_blogPost) {
         Optional<BlogPost> blogPost = blogPostRepository.findById(id);
         if (blogPost.isPresent()) {
-            blogPostRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+            changed_blogPost.setId(blogPost.get().getId());
+            return new ResponseEntity<>(changed_blogPost, HttpStatus.OK);
         }
         else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    public ResponseEntity<BlogPost> putById(long id, BlogPost changed_blogPost) {
+    public ResponseEntity<?> deleteById(long id) {
         Optional<BlogPost> blogPost = blogPostRepository.findById(id);
         if (blogPost.isPresent()) {
-            changed_blogPost.setId(blogPost.get().getId());
-            return new ResponseEntity<>(changed_blogPost, HttpStatus.OK);
+            blogPostRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

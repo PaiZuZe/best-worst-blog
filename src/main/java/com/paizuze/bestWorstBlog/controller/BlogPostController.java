@@ -1,5 +1,6 @@
 package com.paizuze.bestWorstBlog.controller;
 
+import com.paizuze.bestWorstBlog.dto.BlogPostDTOIn;
 import com.paizuze.bestWorstBlog.model.BlogPost;
 import com.paizuze.bestWorstBlog.service.BlogPostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +34,13 @@ public class BlogPostController {
     }
 
     @PostMapping
-    public ResponseEntity<BlogPost> create(@RequestBody BlogPost newBlogPost, @RequestParam("author_id") long author_id) {
-        return blogPostService.create(newBlogPost, author_id);
+    public ResponseEntity<BlogPost> create(@RequestParam("author_id") long author_id, @RequestBody BlogPostDTOIn newBlogPost) {
+        return blogPostService.create(author_id, newBlogPost.toBlogPost());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<BlogPost> putById(@PathVariable long id, @RequestBody BlogPostDTOIn changed_blogPost) {
+        return blogPostService.putById(id, changed_blogPost.toBlogPost());
     }
 
     @DeleteMapping("/{id}")
@@ -42,8 +48,4 @@ public class BlogPostController {
         return blogPostService.deleteById(id);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<BlogPost> putById(@PathVariable long id, @RequestBody BlogPost changed_blogPost) {
-        return blogPostService.putById(id, changed_blogPost);
-    }
 }
