@@ -1,6 +1,7 @@
 package com.paizuze.bestWorstBlog.service;
 
 import com.paizuze.bestWorstBlog.model.Author;
+import com.paizuze.bestWorstBlog.model.BlogPost;
 import com.paizuze.bestWorstBlog.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class AuthorService {
@@ -29,6 +31,11 @@ public class AuthorService {
     public ResponseEntity<Author> getById(long id) {
         Optional<Author> author = authorRepository.findById(id);
         return author.isPresent() ? new ResponseEntity<>(author.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    public ResponseEntity<Set<BlogPost>> getAuthorsBlogPosts(long id) {
+        Optional<Author> author = authorRepository.findById(id);
+        return author.isPresent() ? new  ResponseEntity<>(author.get().getBlogPosts(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     public ResponseEntity<Author> post(Author new_author) {

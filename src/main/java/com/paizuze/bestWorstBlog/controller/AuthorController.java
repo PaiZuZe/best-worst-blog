@@ -1,6 +1,7 @@
 package com.paizuze.bestWorstBlog.controller;
 
 import com.paizuze.bestWorstBlog.model.Author;
+import com.paizuze.bestWorstBlog.model.BlogPost;
 import com.paizuze.bestWorstBlog.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/author")
@@ -31,6 +33,11 @@ public class AuthorController {
     @GetMapping("/{id}")
     public ResponseEntity<Author> getById(@PathVariable long id) {
         return authorService.getById(id);
+    }
+
+    @GetMapping("/{id}/blogPosts")
+    public ResponseEntity<Set<BlogPost>> getAuthorsBlogPosts(@PathVariable long id) {
+        return authorService.getAuthorsBlogPosts(id);
     }
 
     @PostMapping

@@ -1,15 +1,9 @@
-package com.paizuze.bestWorstBlog.model;
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+package com.paizuze.bestWorstBlog.model;;
 
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 @Entity
 @Table(name = "blogPosts")
 public class BlogPost implements Serializable {

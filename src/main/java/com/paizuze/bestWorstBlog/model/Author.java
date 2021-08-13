@@ -1,7 +1,6 @@
 package com.paizuze.bestWorstBlog.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serial;
@@ -9,9 +8,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Set;
 
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 @Entity
 @Table(name = "authors")
 public class Author implements Serializable {
@@ -28,6 +24,7 @@ public class Author implements Serializable {
 
     private BigDecimal balance = new BigDecimal("0.0");
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "author")
     private Set<BlogPost> blogPosts;
 
