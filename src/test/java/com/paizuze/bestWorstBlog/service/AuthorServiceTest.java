@@ -23,16 +23,10 @@ public class AuthorServiceTest {
 
     @BeforeAll
     void setUp() {
-        Author author = new Author();
-        author.setFirstName("Bob");
-        author.setLastName("Maximilliam Gustav III");
-        author.setBalance(new BigDecimal("0.0"));
+        Author author = new Author("Bob", "Maximilliam Gustav III");
         authorRepository.save(author);
 
-        Author author2 = new Author();
-        author2.setFirstName("J.");
-        author2.setLastName("Ronald Rel Tokien");
-        author2.setBalance(new BigDecimal("0.0"));
+        Author author2 = new Author("J.", "Ronald Rel Tokien");
         authorRepository.save(author2);
     }
 
@@ -60,9 +54,7 @@ public class AuthorServiceTest {
 
     @Test
     void testPutById() {
-        Author changed_author = new Author();
-        changed_author.setFirstName("John");
-        changed_author.setLastName("Ronald Reuel Tolkien");
+        Author changed_author = new Author("John", "Ronald Reuel Tolkien");
         changed_author.setBalance(new BigDecimal("100000.00"));
 
         ResponseEntity<Author> response = authorService.putById(2L, changed_author);
