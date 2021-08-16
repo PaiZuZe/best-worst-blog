@@ -29,16 +29,16 @@ public class AuthorServiceTest {
 
     private final long IDNOTFOUND = 100L;
     private final Author author = new Author("Bob", "Maximilliam Gustav III");
-    private final Author old_author = new Author("J.", "Ronald Rel Tokien");
-    private final Author new_author = new Author("John", "Ronald Reuel Tolkien");
+    private final Author oldAuthor = new Author("J.", "Ronald Rel Tokien");
+    private final Author newAuthor = new Author("John", "Ronald Reuel Tolkien");
     private final BlogPost blogPost = new BlogPost("Test", "This is a test");
     private final BlogPost blogPost1 = new BlogPost("Test 2", "This is also a test");
 
     @BeforeAll
     void setUp() {
         this.author.setId(1L);
-        this.old_author.setId(2L);
-        this.new_author.setId(5L);
+        this.oldAuthor.setId(2L);
+        this.newAuthor.setId(5L);
         this.blogPost.setId(3L);
         this.blogPost1.setId(4L);
         this.blogPost.setAuthor(this.author);
@@ -48,10 +48,10 @@ public class AuthorServiceTest {
 
         Mockito.when(authorRepository.findById(IDNOTFOUND)).thenReturn(Optional.empty());
         Mockito.when(authorRepository.findById(1L)).thenReturn(Optional.of(this.author));
-        Mockito.when(authorRepository.findById(2L)).thenReturn(Optional.of(this.old_author));
-        Mockito.when(authorRepository.findAll()).thenReturn(List.of(this.author, this.old_author));
+        Mockito.when(authorRepository.findById(2L)).thenReturn(Optional.of(this.oldAuthor));
+        Mockito.when(authorRepository.findAll()).thenReturn(List.of(this.author, this.oldAuthor));
         Mockito.when(authorRepository.save(this.author)).thenReturn(this.author);
-        Mockito.when(authorRepository.save(this.new_author)).thenReturn(this.new_author);
+        Mockito.when(authorRepository.save(this.newAuthor)).thenReturn(this.newAuthor);
     }
 
     @BeforeEach
@@ -104,10 +104,10 @@ public class AuthorServiceTest {
 
     @Test
     void testPutById() {
-        ResponseEntity<Author> response = authorService.putById(2L, this.new_author);
+        ResponseEntity<Author> response = authorService.putById(2L, this.newAuthor);
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertEquals(2L, response.getBody().getId());
-        verify(authorRepository, times(1)).save(this.new_author);
+        verify(authorRepository, times(1)).save(this.newAuthor);
     }
 
     @Test
