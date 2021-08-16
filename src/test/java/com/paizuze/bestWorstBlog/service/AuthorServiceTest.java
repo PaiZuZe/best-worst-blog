@@ -44,7 +44,7 @@ public class AuthorServiceTest {
         ResponseEntity<Author> response = authorService.getById(1L);
         Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
-    
+
     @Test
     void testPutByIdNotFound() {
         Optional<Author> opt = Optional.empty();
