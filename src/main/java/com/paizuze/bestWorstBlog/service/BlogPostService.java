@@ -4,7 +4,6 @@ import com.paizuze.bestWorstBlog.model.Author;
 import com.paizuze.bestWorstBlog.model.BlogPost;
 import com.paizuze.bestWorstBlog.repository.AuthorRepository;
 import com.paizuze.bestWorstBlog.repository.BlogPostRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -16,11 +15,13 @@ import java.util.Optional;
 
 @Service
 public class BlogPostService {
-    @Autowired
-    private BlogPostRepository blogPostRepository;
+    private final BlogPostRepository blogPostRepository;
+    private final AuthorRepository authorRepository;
 
-    @Autowired
-    private AuthorRepository authorRepository;
+    public BlogPostService(AuthorRepository authorRepository, BlogPostRepository blogPostRepository) {
+        this.authorRepository = authorRepository;
+        this.blogPostRepository = blogPostRepository;
+    }
 
     public ResponseEntity<Page<BlogPost>> getPage(Pageable pageable) {
         return new ResponseEntity<>(blogPostRepository.findAll(pageable), HttpStatus.OK);
