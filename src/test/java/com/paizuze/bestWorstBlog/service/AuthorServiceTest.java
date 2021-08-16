@@ -29,14 +29,16 @@ public class AuthorServiceTest {
 
     private final long IDNOTFOUND = 100L;
     private final Author author = new Author("Bob", "Maximilliam Gustav III");
-    private final Author author1 = new Author("Jeff", "The Bob supreme");
+    private final Author old_author = new Author("J.", "Ronald Rel Tokien");
+    private final Author new_author = new Author("John", "Ronald Reuel Tolkien");
     private final BlogPost blogPost = new BlogPost("Test", "This is a test");
     private final BlogPost blogPost1 = new BlogPost("Test 2", "This is also a test");
 
     @BeforeAll
     void setUp() {
         this.author.setId(1L);
-        this.author1.setId(2L);
+        this.old_author.setId(2L);
+        this.new_author.setId(5L);
         this.blogPost.setId(3L);
         this.blogPost1.setId(4L);
         this.blogPost.setAuthor(this.author);
@@ -46,8 +48,15 @@ public class AuthorServiceTest {
 
         Mockito.when(authorRepository.findById(IDNOTFOUND)).thenReturn(Optional.empty());
         Mockito.when(authorRepository.findById(1L)).thenReturn(Optional.of(this.author));
-        Mockito.when(authorRepository.findAll()).thenReturn(List.of(author, author1));
+        Mockito.when(authorRepository.findById(2L)).thenReturn(Optional.of(this.old_author));
+        Mockito.when(authorRepository.findAll()).thenReturn(List.of(this.author, this.old_author));
         Mockito.when(authorRepository.save(this.author)).thenReturn(this.author);
+        Mockito.when(authorRepository.save(this.new_author)).thenReturn(this.new_author);
+    }
+
+    @BeforeEach
+    void cleanUp() {
+        clearInvocations(this.authorRepository);
     }
 
     @Test
@@ -94,9 +103,25 @@ public class AuthorServiceTest {
     }
 
     @Test
+    void testPutById() {
+        ResponseEntity<Author> response = authorService.putById(2L, this.new_author);
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assertions.assertEquals(2L, response.getBody().getId());
+        verify(authorRepository, times(1)).save(this.new_author);
+    }
+
+    @Test
     void testPutByIdNotFound() {
         ResponseEntity<Author> response = authorService.putById(IDNOTFOUND, new Author());
         Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    void testDonate() {
+        ResponseEntity<?> response = authorService.donate(1L, BigDecimal.valueOf(100L));
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assertions.assertEquals(BigDecimal.valueOf(100.0), this.author.getBalance());
+        verify(authorRepository, times(1)).save(this.author);
     }
 
     @Test
@@ -111,7 +136,6 @@ public class AuthorServiceTest {
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         verify(authorRepository, times(1)).deleteById(1L);
     }
-
 
     @Test
     void testDeleteByIdNotFound() {
