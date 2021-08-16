@@ -40,7 +40,7 @@ public class AuthorService {
         return author.isPresent() ? new  ResponseEntity<>(author.get().getBlogPosts(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    public ResponseEntity<Author> post(Author new_author) {
+    public ResponseEntity<Author> create(Author new_author) {
         new_author = authorRepository.save(new_author);
         return new ResponseEntity<>(new_author, HttpStatus.CREATED);
     }

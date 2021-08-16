@@ -43,7 +43,7 @@ public class AuthorController {
 
     @PostMapping
     public ResponseEntity<Author> post(@RequestBody AuthorDTOIn new_author) {
-        return authorService.post(new_author.toAuthor());
+        return authorService.create(new_author.toAuthor());
     }
 
     @PutMapping("/{id}")
