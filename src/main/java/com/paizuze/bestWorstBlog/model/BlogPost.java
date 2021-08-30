@@ -1,4 +1,4 @@
-package com.paizuze.bestWorstBlog.model;;
+package com.paizuze.bestWorstBlog.model;
 
 import javax.persistence.*;
 import java.io.Serial;
