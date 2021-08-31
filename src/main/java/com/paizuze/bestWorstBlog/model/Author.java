@@ -40,6 +40,11 @@ public class Author implements Serializable {
         this.setLastName(lastName);
     }
 
+    public Author(String firstName, String lastName, String balance) {
+        this(firstName, lastName);
+        this.setBalance(new BigDecimal(balance));
+    }
+
     public Long getId() {
         return id;
     }

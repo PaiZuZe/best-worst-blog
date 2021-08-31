@@ -6,9 +6,10 @@ import com.paizuze.bestWorstBlog.model.Author;
 public class AuthorDTOIn {
     private String lastName;
     private String firstName;
+    private String balance = "0.0";
 
     public Author toAuthor() {
-        return new Author(this.getFirstName(), this.getLastName());
+        return new Author(this.getFirstName(), this.getLastName(), this.getBalance());
     }
 
     public String getLastName() {
@@ -25,5 +26,13 @@ public class AuthorDTOIn {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getBalance() {
+        return balance;
+    }
+
+    public void setBalance(String balance) {
+        this.balance = balance;
     }
 }

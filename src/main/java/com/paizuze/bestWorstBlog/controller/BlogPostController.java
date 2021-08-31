@@ -35,8 +35,8 @@ public class BlogPostController {
     }
 
     @PostMapping
-    public ResponseEntity<BlogPost> create(@RequestParam("author_id") long author_id, @RequestBody BlogPostDTOIn newBlogPost) {
-        return blogPostService.create(author_id, newBlogPost.toBlogPost());
+    public ResponseEntity<BlogPost> create(@RequestBody BlogPostDTOIn newBlogPost) {
+        return blogPostService.create(newBlogPost.getAuthor_id(), newBlogPost.toBlogPost());
     }
 
     @PutMapping("/{id}")
