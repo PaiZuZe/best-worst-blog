@@ -1,6 +1,7 @@
 package com.paizuze.bestWorstBlog.service;
 
 import com.paizuze.bestWorstBlog.dto.AuthorDTO;
+import com.paizuze.bestWorstBlog.dto.BlogPostDTO;
 import com.paizuze.bestWorstBlog.model.Author;
 import com.paizuze.bestWorstBlog.model.BlogPost;
 import com.paizuze.bestWorstBlog.repository.AuthorRepository;
@@ -80,13 +81,13 @@ public class AuthorServiceTest {
 
     @Test
     void testGetAuthorsBlogPosts() {
-        Set<BlogPost> response = authorService.getAuthorsBlogPosts(1L);
+        Set<BlogPostDTO> response = authorService.getAuthorsBlogPosts(1L);
         Assertions.assertEquals(2, response.size());
     }
 
     @Test
     void testGetAuthorsBlogPostsNotFound() {
-        Set<BlogPost> response = authorService.getAuthorsBlogPosts(IDNOTFOUND);
+        Set<BlogPostDTO> response = authorService.getAuthorsBlogPosts(IDNOTFOUND);
         Assertions.assertNull(response);
     }
 

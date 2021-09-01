@@ -1,13 +1,12 @@
 package com.paizuze.bestWorstBlog.service;
 
 import com.paizuze.bestWorstBlog.dto.AuthorDTO;
+import com.paizuze.bestWorstBlog.dto.BlogPostDTO;
 import com.paizuze.bestWorstBlog.model.Author;
 import com.paizuze.bestWorstBlog.model.BlogPost;
 import com.paizuze.bestWorstBlog.repository.AuthorRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -37,9 +36,9 @@ public class AuthorService {
         return author.isPresent() ? author.get().toAuthorDTO() : null;
     }
 
-    public Set<BlogPost> getAuthorsBlogPosts(long id) {
+    public Set<BlogPostDTO> getAuthorsBlogPosts(long id) {
         Optional<Author> author = authorRepository.findById(id);
-        return author.isPresent() ? author.get().getBlogPosts() : null;
+        return author.isPresent() ? author.get().getBlogPosts().stream().map(BlogPost::toBlogPostDTO).collect(Collectors.toSet()) : null;
     }
 
     public AuthorDTO create(Author new_author) {

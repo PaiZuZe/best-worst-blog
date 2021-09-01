@@ -1,5 +1,6 @@
 package com.paizuze.bestWorstBlog.service;
 
+import com.paizuze.bestWorstBlog.dto.BlogPostDTO;
 import com.paizuze.bestWorstBlog.model.Author;
 import com.paizuze.bestWorstBlog.model.BlogPost;
 import com.paizuze.bestWorstBlog.repository.BlogPostRepository;
@@ -60,14 +61,14 @@ public class BlogPostServiceTest {
 
     @Test
     void testGetAll() {
-        ResponseEntity<List<BlogPost>> response = blogPostService.getAll();
+        ResponseEntity<List<BlogPostDTO>> response = blogPostService.getAll();
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertEquals(2, response.getBody().size());
     }
 
     @Test
     void testGetById() {
-        ResponseEntity<BlogPost> response = blogPostService.getById(2L);
+        ResponseEntity<BlogPostDTO> response = blogPostService.getById(2L);
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertEquals("Test 1", response.getBody().getTitle());
         Assertions.assertEquals("Lorem Ipsum", response.getBody().getTextBody());
@@ -75,22 +76,22 @@ public class BlogPostServiceTest {
 
     @Test
     void testByIdNotFound() {
-        ResponseEntity<BlogPost> response = blogPostService.getById(IDNOTFOUND);
+        ResponseEntity<BlogPostDTO> response = blogPostService.getById(IDNOTFOUND);
         Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
     @Test
     void testPutById() {
-        ResponseEntity<BlogPost> response = blogPostService.putById(3L, newBlogPost);
+        ResponseEntity<BlogPostDTO> response = blogPostService.putById(3L, newBlogPost);
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertEquals(3L, response.getBody().getId());
-        Assertions.assertEquals(this.author2, response.getBody().getAuthor());
+        Assertions.assertEquals(this.author2.getId(), response.getBody().getAuthorId());
         verify(blogPostRepository, times(1)).save(newBlogPost);
     }
 
     @Test
     void testPutByIdNotFound() {
-        ResponseEntity<BlogPost> response = blogPostService.getById(IDNOTFOUND);
+        ResponseEntity<BlogPostDTO> response = blogPostService.getById(IDNOTFOUND);
         Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 

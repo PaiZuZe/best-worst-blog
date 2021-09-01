@@ -1,5 +1,7 @@
 package com.paizuze.bestWorstBlog.model;
 
+import com.paizuze.bestWorstBlog.dto.BlogPostDTO;
+
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
@@ -28,6 +30,15 @@ public class BlogPost implements Serializable {
         this();
         this.setTitle(title);
         this.setTextBody(textBody);
+    }
+
+    public BlogPostDTO toBlogPostDTO() {
+        BlogPostDTO dto = new BlogPostDTO();
+        dto.setId(this.getId());
+        dto.setTitle(this.getTitle());
+        dto.setTextBody(this.getTextBody());
+        dto.setAuthorId(this.getAuthor().getId());
+        return dto;
     }
 
     public Long getId() {

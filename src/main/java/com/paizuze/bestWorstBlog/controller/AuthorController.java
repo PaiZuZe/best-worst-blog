@@ -1,6 +1,7 @@
 package com.paizuze.bestWorstBlog.controller;
 
 import com.paizuze.bestWorstBlog.dto.AuthorDTO;
+import com.paizuze.bestWorstBlog.dto.BlogPostDTO;
 import com.paizuze.bestWorstBlog.model.BlogPost;
 import com.paizuze.bestWorstBlog.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +40,8 @@ public class AuthorController {
     }
 
     @GetMapping("/{id}/blogPosts")
-    public ResponseEntity<Set<BlogPost>> getAuthorsBlogPosts(@PathVariable long id) {
-        Set<BlogPost> resp =  authorService.getAuthorsBlogPosts(id);
+    public ResponseEntity<Set<BlogPostDTO>> getAuthorsBlogPosts(@PathVariable long id) {
+        Set<BlogPostDTO> resp =  authorService.getAuthorsBlogPosts(id);
         return resp != null ? new ResponseEntity<>(resp, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

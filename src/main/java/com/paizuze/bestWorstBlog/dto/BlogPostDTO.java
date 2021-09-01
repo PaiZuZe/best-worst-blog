@@ -2,13 +2,22 @@ package com.paizuze.bestWorstBlog.dto;
 
 import com.paizuze.bestWorstBlog.model.BlogPost;
 
-public class BlogPostDTOIn {
+public class BlogPostDTO {
+    private Long id;
     private String title;
     private String textBody;
-    private Long author_id;
+    private Long authorId;
 
     public BlogPost toBlogPost() {
         return new BlogPost(title, textBody);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -27,11 +36,11 @@ public class BlogPostDTOIn {
         this.textBody = textBody;
     }
 
-    public Long getAuthor_id() {
-        return author_id;
+    public Long getAuthorId() {
+        return authorId;
     }
 
-    public void setAuthor_id(Long author_id) {
-        this.author_id = author_id;
+    public void setAuthorId(Long authorId) {
+        this.authorId = authorId;
     }
 }

@@ -1,7 +1,6 @@
 package com.paizuze.bestWorstBlog.controller;
 
-import com.paizuze.bestWorstBlog.dto.BlogPostDTOIn;
-import com.paizuze.bestWorstBlog.model.BlogPost;
+import com.paizuze.bestWorstBlog.dto.BlogPostDTO;
 import com.paizuze.bestWorstBlog.service.BlogPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,27 +19,27 @@ public class BlogPostController {
     private BlogPostService blogPostService;
 
     @GetMapping("/pages")
-    public ResponseEntity<Page<BlogPost>> getPage(Pageable pageable) {
+    public ResponseEntity<Page<BlogPostDTO>> getPage(Pageable pageable) {
         return blogPostService.getPage(pageable);
     }
 
     @GetMapping
-    public ResponseEntity<List<BlogPost>> getAll() {
+    public ResponseEntity<List<BlogPostDTO>> getAll() {
         return blogPostService.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BlogPost> getById(@PathVariable long id) {
+    public ResponseEntity<BlogPostDTO> getById(@PathVariable long id) {
         return blogPostService.getById(id);
     }
 
     @PostMapping
-    public ResponseEntity<BlogPost> create(@RequestBody BlogPostDTOIn newBlogPost) {
-        return blogPostService.create(newBlogPost.getAuthor_id(), newBlogPost.toBlogPost());
+    public ResponseEntity<BlogPostDTO> create(@RequestBody BlogPostDTO newBlogPost) {
+        return blogPostService.create(newBlogPost.getAuthorId(), newBlogPost.toBlogPost());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BlogPost> putById(@PathVariable long id, @RequestBody BlogPostDTOIn changed_blogPost) {
+    public ResponseEntity<BlogPostDTO> putById(@PathVariable long id, @RequestBody BlogPostDTO changed_blogPost) {
         return blogPostService.putById(id, changed_blogPost.toBlogPost());
     }
 
