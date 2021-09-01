@@ -1,6 +1,7 @@
 package com.paizuze.bestWorstBlog.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.paizuze.bestWorstBlog.dto.AuthorDTO;
 
 import javax.persistence.*;
 import java.io.Serial;
@@ -43,6 +44,15 @@ public class Author implements Serializable {
     public Author(String firstName, String lastName, String balance) {
         this(firstName, lastName);
         this.setBalance(new BigDecimal(balance));
+    }
+
+    public AuthorDTO toAuthorDTO(){
+        AuthorDTO dto = new AuthorDTO();
+        dto.setBalance(this.getBalance().toString());
+        dto.setFirstName(this.getFirstName());
+        dto.setLastName(this.getLastName());
+        dto.setId(this.getId());
+        return dto;
     }
 
     public Long getId() {

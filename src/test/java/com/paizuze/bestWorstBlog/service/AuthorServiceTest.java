@@ -1,5 +1,6 @@
 package com.paizuze.bestWorstBlog.service;
 
+import com.paizuze.bestWorstBlog.dto.AuthorDTO;
 import com.paizuze.bestWorstBlog.model.Author;
 import com.paizuze.bestWorstBlog.model.BlogPost;
 import com.paizuze.bestWorstBlog.repository.AuthorRepository;
@@ -8,8 +9,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -61,85 +60,79 @@ public class AuthorServiceTest {
 
     @Test
     void testGetAll() {
-        ResponseEntity<List<Author>> response = authorService.getAll();
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertEquals(2, response.getBody().size());
+        List<AuthorDTO> response = authorService.getAll();
+        Assertions.assertEquals(2, response.size());
     }
 
     @Test
     void testGetById() {
-        ResponseEntity<Author> response = authorService.getById(1L);
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Author authorResponse = response.getBody();
-        Assertions.assertEquals("Bob", authorResponse.getFirstName());
-        Assertions.assertEquals("Maximilliam Gustav III", authorResponse.getLastName());
-        Assertions.assertEquals(new BigDecimal("0.0").longValue(), authorResponse.getBalance().longValue());
+        AuthorDTO response = authorService.getById(1L);
+        Assertions.assertEquals("Bob", response.getFirstName());
+        Assertions.assertEquals("Maximilliam Gustav III", response.getLastName());
+        Assertions.assertEquals(new BigDecimal("0.0").toString(), response.getBalance());
     }
 
     @Test
     void testGetByIdNotFound() {
-        ResponseEntity<Author> response = authorService.getById(IDNOTFOUND);
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        AuthorDTO response = authorService.getById(IDNOTFOUND);
+        Assertions.assertNull(response);
     }
 
     @Test
     void testGetAuthorsBlogPosts() {
-        ResponseEntity<Set<BlogPost>> response = authorService.getAuthorsBlogPosts(1L);
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertEquals(2, response.getBody().size());
+        Set<BlogPost> response = authorService.getAuthorsBlogPosts(1L);
+        Assertions.assertEquals(2, response.size());
     }
 
     @Test
     void testGetAuthorsBlogPostsNotFound() {
-        ResponseEntity<Set<BlogPost>> response = authorService.getAuthorsBlogPosts(IDNOTFOUND);
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        Set<BlogPost> response = authorService.getAuthorsBlogPosts(IDNOTFOUND);
+        Assertions.assertNull(response);
     }
 
     @Test
     void testCreate() {
-        ResponseEntity<Author> response = authorService.create(this.author);
-        Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        authorService.create(this.author);
         verify(authorRepository, times(1)).save(this.author);
     }
 
     @Test
     void testPutById() {
-        ResponseEntity<Author> response = authorService.putById(2L, this.newAuthor);
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertEquals(2L, response.getBody().getId());
+        AuthorDTO response = authorService.putById(2L, this.newAuthor);
+        Assertions.assertEquals(2L, response.getId());
         verify(authorRepository, times(1)).save(this.newAuthor);
     }
 
     @Test
     void testPutByIdNotFound() {
-        ResponseEntity<Author> response = authorService.putById(IDNOTFOUND, new Author());
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        AuthorDTO response = authorService.putById(IDNOTFOUND, new Author());
+        Assertions.assertNull(response);
     }
 
     @Test
     void testDonate() {
-        ResponseEntity<?> response = authorService.donate(1L, BigDecimal.valueOf(100L));
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+        boolean response = authorService.donate(1L, BigDecimal.valueOf(100L));
+        Assertions.assertTrue(response);
         Assertions.assertEquals(BigDecimal.valueOf(100.0), this.author.getBalance());
         verify(authorRepository, times(1)).save(this.author);
     }
 
     @Test
     void testDonateNotFound() {
-        ResponseEntity<?> response = authorService.donate(IDNOTFOUND, BigDecimal.valueOf(10));
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        boolean response = authorService.donate(IDNOTFOUND, BigDecimal.valueOf(10));
+        Assertions.assertFalse(response);
     }
 
     @Test
     void testDeleteById() {
-        ResponseEntity<?> response = authorService.deleteById(1L);
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+        boolean response = authorService.deleteById(1L);
+        Assertions.assertTrue(response);
         verify(authorRepository, times(1)).deleteById(1L);
     }
 
     @Test
     void testDeleteByIdNotFound() {
-        ResponseEntity<?> response = authorService.deleteById(IDNOTFOUND);
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        boolean response = authorService.deleteById(IDNOTFOUND);
+        Assertions.assertFalse(response);
     }
 }

@@ -1,5 +1,6 @@
 package com.paizuze.bestWorstBlog.service;
 
+import com.paizuze.bestWorstBlog.dto.AuthorDTO;
 import com.paizuze.bestWorstBlog.model.Author;
 import com.paizuze.bestWorstBlog.model.BlogPost;
 import com.paizuze.bestWorstBlog.repository.AuthorRepository;
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthorService {
@@ -22,61 +24,61 @@ public class AuthorService {
         this.authorRepository = authorRepository;
     }
 
-    public ResponseEntity<Page<Author>> getPage(Pageable pageable) {
-        return new ResponseEntity<>(authorRepository.findAll(pageable), HttpStatus.OK);
+    public Page<AuthorDTO> getPage(Pageable pageable) {
+        return authorRepository.findAll(pageable).map(Author::toAuthorDTO);
     }
 
-    public ResponseEntity<List<Author>> getAll() {
-        return new ResponseEntity<>(authorRepository.findAll(), HttpStatus.OK);
+    public List<AuthorDTO> getAll() {
+        return authorRepository.findAll().stream().map(Author::toAuthorDTO).collect(Collectors.toList());
     }
 
-    public ResponseEntity<Author> getById(long id) {
+    public AuthorDTO getById(long id) {
         Optional<Author> author = authorRepository.findById(id);
-        return author.isPresent() ? new ResponseEntity<>(author.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return author.isPresent() ? author.get().toAuthorDTO() : null;
     }
 
-    public ResponseEntity<Set<BlogPost>> getAuthorsBlogPosts(long id) {
+    public Set<BlogPost> getAuthorsBlogPosts(long id) {
         Optional<Author> author = authorRepository.findById(id);
-        return author.isPresent() ? new  ResponseEntity<>(author.get().getBlogPosts(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return author.isPresent() ? author.get().getBlogPosts() : null;
     }
 
-    public ResponseEntity<Author> create(Author new_author) {
+    public AuthorDTO create(Author new_author) {
         new_author = authorRepository.save(new_author);
-        return new ResponseEntity<>(new_author, HttpStatus.CREATED);
+        return new_author.toAuthorDTO();
     }
 
-    public ResponseEntity<Author> putById(long id, Author changed_author) {
+    public AuthorDTO putById(long id, Author changed_author) {
         Optional<Author> author = authorRepository.findById(id);
         if (author.isPresent()) {
             changed_author.setId(author.get().getId());
             changed_author = authorRepository.save(changed_author);
-            return new ResponseEntity<>(changed_author, HttpStatus.OK);
+            return changed_author.toAuthorDTO();
         }
         else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return null;
         }
     }
 
-    public ResponseEntity<?> deleteById(long id){
+    public boolean deleteById(long id){
         Optional<Author> author = authorRepository.findById(id);
         if (author.isPresent()) {
             authorRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return true;
         }
         else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return false;
         }
     }
 
-    public ResponseEntity<?> donate(long id, BigDecimal donation_amount){
+    public boolean donate(long id, BigDecimal donation_amount){
         Optional<Author> author = authorRepository.findById(id);
         if (author.isPresent()) {
             author.get().setBalance(author.get().getBalance().add(donation_amount));
             authorRepository.save(author.get());
-            return new ResponseEntity<>(HttpStatus.OK);
+            return true;
         }
         else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return false;
         }
     }
 }
