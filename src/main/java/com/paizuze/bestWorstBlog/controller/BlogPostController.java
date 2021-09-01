@@ -5,6 +5,7 @@ import com.paizuze.bestWorstBlog.service.BlogPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,32 +21,38 @@ public class BlogPostController {
 
     @GetMapping("/pages")
     public ResponseEntity<Page<BlogPostDTO>> getPage(Pageable pageable) {
-        return blogPostService.getPage(pageable);
+        Page<BlogPostDTO> resp = blogPostService.getPage(pageable);
+        return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<List<BlogPostDTO>> getAll() {
-        return blogPostService.getAll();
+        List<BlogPostDTO> resp = blogPostService.getAll();
+        return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<BlogPostDTO> getById(@PathVariable long id) {
-        return blogPostService.getById(id);
+        BlogPostDTO resp = blogPostService.getById(id);
+        return resp != null ? new ResponseEntity<>(resp, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping
     public ResponseEntity<BlogPostDTO> create(@RequestBody BlogPostDTO newBlogPost) {
-        return blogPostService.create(newBlogPost.getAuthorId(), newBlogPost.toBlogPost());
+        BlogPostDTO resp = blogPostService.create(newBlogPost.getAuthorId(), newBlogPost.toBlogPost());
+        return resp != null ? new ResponseEntity<>(resp, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<BlogPostDTO> putById(@PathVariable long id, @RequestBody BlogPostDTO changed_blogPost) {
-        return blogPostService.putById(id, changed_blogPost.toBlogPost());
+        BlogPostDTO resp = blogPostService.putById(id, changed_blogPost.toBlogPost());
+        return resp != null ? new ResponseEntity<>(resp, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable long id) {
-        return blogPostService.deleteById(id);
+        boolean resp = blogPostService.deleteById(id);
+        return resp ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 }

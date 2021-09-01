@@ -61,50 +61,47 @@ public class BlogPostServiceTest {
 
     @Test
     void testGetAll() {
-        ResponseEntity<List<BlogPostDTO>> response = blogPostService.getAll();
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertEquals(2, response.getBody().size());
+        List<BlogPostDTO> response = blogPostService.getAll();
+        Assertions.assertEquals(2, response.size());
     }
 
     @Test
     void testGetById() {
-        ResponseEntity<BlogPostDTO> response = blogPostService.getById(2L);
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertEquals("Test 1", response.getBody().getTitle());
-        Assertions.assertEquals("Lorem Ipsum", response.getBody().getTextBody());
+        BlogPostDTO response = blogPostService.getById(2L);
+        Assertions.assertEquals("Test 1", response.getTitle());
+        Assertions.assertEquals("Lorem Ipsum", response.getTextBody());
     }
 
     @Test
     void testByIdNotFound() {
-        ResponseEntity<BlogPostDTO> response = blogPostService.getById(IDNOTFOUND);
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        BlogPostDTO response = blogPostService.getById(IDNOTFOUND);
+        Assertions.assertNull(response);
     }
 
     @Test
     void testPutById() {
-        ResponseEntity<BlogPostDTO> response = blogPostService.putById(3L, newBlogPost);
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertEquals(3L, response.getBody().getId());
-        Assertions.assertEquals(this.author2.getId(), response.getBody().getAuthorId());
+        BlogPostDTO response = blogPostService.putById(3L, newBlogPost);
+        Assertions.assertEquals(3L, response.getId());
+        Assertions.assertEquals(this.author2.getId(), response.getAuthorId());
         verify(blogPostRepository, times(1)).save(newBlogPost);
     }
 
     @Test
     void testPutByIdNotFound() {
-        ResponseEntity<BlogPostDTO> response = blogPostService.getById(IDNOTFOUND);
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        BlogPostDTO response = blogPostService.putById(IDNOTFOUND, new BlogPost());
+        Assertions.assertNull(response);
     }
 
     @Test
     void testDeleteById(){
-        ResponseEntity<?> response = blogPostService.deleteById(2L);
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+        boolean response = blogPostService.deleteById(2L);
+        Assertions.assertTrue(response);
         verify(blogPostRepository, times(1)).deleteById(2L);
     }
 
     @Test
     void testDeleteByIdNotFound() {
-        ResponseEntity<?> response = blogPostService.deleteById(IDNOTFOUND);
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        boolean response = blogPostService.deleteById(IDNOTFOUND);
+        Assertions.assertFalse(response);
     }
 }
