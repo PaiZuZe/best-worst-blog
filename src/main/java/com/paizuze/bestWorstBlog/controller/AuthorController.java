@@ -2,7 +2,6 @@ package com.paizuze.bestWorstBlog.controller;
 
 import com.paizuze.bestWorstBlog.dto.AuthorDTO;
 import com.paizuze.bestWorstBlog.dto.BlogPostDTO;
-import com.paizuze.bestWorstBlog.model.BlogPost;
 import com.paizuze.bestWorstBlog.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
@@ -61,12 +59,6 @@ public class AuthorController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable long id){
         boolean resp = authorService.deleteById(id);
-        return resp ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @PostMapping("/{id}/donate")
-    public ResponseEntity<?> donate(@PathVariable long id, @RequestParam("donation_amount") BigDecimal donationAmount) {
-        boolean resp = authorService.donate(id, donationAmount);
         return resp ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
