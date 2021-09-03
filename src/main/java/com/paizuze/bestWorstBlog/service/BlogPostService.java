@@ -42,8 +42,7 @@ public class BlogPostService {
             return null;
         }
         newBlogPost.setAuthor(author.get());
-        newBlogPost = blogPostRepository.save(newBlogPost);
-        return newBlogPost.toBlogPostDTO();
+        return blogPostRepository.save(newBlogPost).toBlogPostDTO();
     }
 
     public BlogPostDTO putById(long id, BlogPost changed_blogPost) {
@@ -51,8 +50,7 @@ public class BlogPostService {
         if (blogPost.isPresent()) {
             changed_blogPost.setId(blogPost.get().getId());
             changed_blogPost.setAuthor(blogPost.get().getAuthor());
-            changed_blogPost = blogPostRepository.save(changed_blogPost);
-            return changed_blogPost.toBlogPostDTO();
+            return blogPostRepository.save(changed_blogPost).toBlogPostDTO();
         }
         else {
             return null;

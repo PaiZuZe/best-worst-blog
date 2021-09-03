@@ -30,6 +30,9 @@ public class Author implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "author")
     private Set<BlogPost> blogPosts;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "author")
+    private Set<Donation> donations;
+
     public Author() {
         this.setBalance(new BigDecimal("0.0"));
         this.setBlogPosts(new HashSet<>());
@@ -102,6 +105,14 @@ public class Author implements Serializable {
 
     public void setBlogPosts(Set<BlogPost> blogPosts) {
         this.blogPosts = blogPosts;
+    }
+
+    public Set<Donation> getDonations() {
+        return donations;
+    }
+
+    public void setDonations(Set<Donation> donations) {
+        this.donations = donations;
     }
 
     public BigDecimal getBalance() {

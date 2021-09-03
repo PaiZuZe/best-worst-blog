@@ -3,11 +3,20 @@ package com.paizuze.bestWorstBlog.dto;
 import java.math.BigDecimal;
 
 public class DonationDTO {
-    BigDecimal donationAmount;
+    Long id;
     Long authorId;
+    BigDecimal donationAmount;
 
     public BigDecimal getDonationAmount() {
         return donationAmount;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setDonationAmount(BigDecimal donationAmount) {

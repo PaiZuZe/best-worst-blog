@@ -1,5 +1,7 @@
 package com.paizuze.bestWorstBlog.model;
 
+import com.paizuze.bestWorstBlog.dto.DonationDTO;
+
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
@@ -17,7 +19,22 @@ public class Donation implements Serializable {
 
     private BigDecimal amount;
 
+    @ManyToOne
+    private Author author;
+
     public Donation() {
+    }
+
+    public Donation(DonationDTO dto) {
+        this.setAmount(dto.getDonationAmount());
+    }
+
+    public DonationDTO toDTO() {
+        DonationDTO dto = new DonationDTO();
+        dto.setDonationAmount(this.getAmount());
+        dto.setAuthorId(this.getAuthor().getId());
+        dto.setId(this.getId());
+        return dto;
     }
 
     public Long getId() {
@@ -34,6 +51,14 @@ public class Donation implements Serializable {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 
     @Override
