@@ -42,16 +42,14 @@ public class AuthorService {
     }
 
     public AuthorDTO create(Author new_author) {
-        new_author = authorRepository.save(new_author);
-        return new_author.toAuthorDTO();
+        return authorRepository.save(new_author).toAuthorDTO();
     }
 
     public AuthorDTO putById(long id, Author changed_author) {
         Optional<Author> author = authorRepository.findById(id);
         if (author.isPresent()) {
             changed_author.setId(author.get().getId());
-            changed_author = authorRepository.save(changed_author);
-            return changed_author.toAuthorDTO();
+            return authorRepository.save(changed_author).toAuthorDTO();
         }
         else {
             return null;

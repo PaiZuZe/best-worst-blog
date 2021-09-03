@@ -24,7 +24,7 @@ public class BlogPostServiceTest {
     @InjectMocks
     BlogPostService blogPostService;
 
-    private final long IDNOTFOUND = 100L;
+    private final long ID_NOT_FOUND = 100L;
     private final Author author = new Author("Jeff", "The Bob supreme");
     private final Author author2 = new Author("Bob", "Carlos Rodriguez");
     private final BlogPost blogPost = new BlogPost("Test 1", "Lorem Ipsum");
@@ -45,7 +45,7 @@ public class BlogPostServiceTest {
         this.author2.setBlogPosts(new HashSet<>(List.of(this.oldBlogPost)));
         this.blogPostRepository = mock(BlogPostRepository.class);
 
-        Mockito.when(blogPostRepository.findById(IDNOTFOUND)).thenReturn(Optional.empty());
+        Mockito.when(blogPostRepository.findById(ID_NOT_FOUND)).thenReturn(Optional.empty());
         Mockito.when(blogPostRepository.findById(2L)).thenReturn(Optional.of(this.blogPost));
         Mockito.when(blogPostRepository.findById(3L)).thenReturn(Optional.of(this.oldBlogPost));
         Mockito.when(blogPostRepository.findAll()).thenReturn(List.of(this.blogPost, this.oldBlogPost));
@@ -72,7 +72,7 @@ public class BlogPostServiceTest {
 
     @Test
     void testByIdNotFound() {
-        BlogPostDTO response = blogPostService.getById(IDNOTFOUND);
+        BlogPostDTO response = blogPostService.getById(ID_NOT_FOUND);
         Assertions.assertNull(response);
     }
 
@@ -86,7 +86,7 @@ public class BlogPostServiceTest {
 
     @Test
     void testPutByIdNotFound() {
-        BlogPostDTO response = blogPostService.putById(IDNOTFOUND, new BlogPost());
+        BlogPostDTO response = blogPostService.putById(ID_NOT_FOUND, new BlogPost());
         Assertions.assertNull(response);
     }
 
@@ -99,7 +99,7 @@ public class BlogPostServiceTest {
 
     @Test
     void testDeleteByIdNotFound() {
-        boolean response = blogPostService.deleteById(IDNOTFOUND);
+        boolean response = blogPostService.deleteById(ID_NOT_FOUND);
         Assertions.assertFalse(response);
     }
 }

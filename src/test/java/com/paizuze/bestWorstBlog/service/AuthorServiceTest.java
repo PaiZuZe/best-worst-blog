@@ -27,7 +27,7 @@ public class AuthorServiceTest {
     @InjectMocks
     private AuthorService authorService;
 
-    private final long IDNOTFOUND = 100L;
+    private final long ID_NOT_FOUND = 100L;
     private final Author author = new Author("Bob", "Maximilliam Gustav III");
     private final Author oldAuthor = new Author("J.", "Ronald Rel Tokien");
     private final Author newAuthor = new Author("John", "Ronald Reuel Tolkien");
@@ -46,7 +46,7 @@ public class AuthorServiceTest {
         this.author.setBlogPosts(new HashSet<>(List.of(this.blogPost, this.blogPost1)));
         this.authorRepository = mock(AuthorRepository.class);
 
-        Mockito.when(authorRepository.findById(IDNOTFOUND)).thenReturn(Optional.empty());
+        Mockito.when(authorRepository.findById(ID_NOT_FOUND)).thenReturn(Optional.empty());
         Mockito.when(authorRepository.findById(1L)).thenReturn(Optional.of(this.author));
         Mockito.when(authorRepository.findById(2L)).thenReturn(Optional.of(this.oldAuthor));
         Mockito.when(authorRepository.findAll()).thenReturn(List.of(this.author, this.oldAuthor));
@@ -75,7 +75,7 @@ public class AuthorServiceTest {
 
     @Test
     void testGetByIdNotFound() {
-        AuthorDTO response = authorService.getById(IDNOTFOUND);
+        AuthorDTO response = authorService.getById(ID_NOT_FOUND);
         Assertions.assertNull(response);
     }
 
@@ -87,7 +87,7 @@ public class AuthorServiceTest {
 
     @Test
     void testGetAuthorsBlogPostsNotFound() {
-        Set<BlogPostDTO> response = authorService.getAuthorsBlogPosts(IDNOTFOUND);
+        Set<BlogPostDTO> response = authorService.getAuthorsBlogPosts(ID_NOT_FOUND);
         Assertions.assertNull(response);
     }
 
@@ -106,7 +106,7 @@ public class AuthorServiceTest {
 
     @Test
     void testPutByIdNotFound() {
-        AuthorDTO response = authorService.putById(IDNOTFOUND, new Author());
+        AuthorDTO response = authorService.putById(ID_NOT_FOUND, new Author());
         Assertions.assertNull(response);
     }
 
@@ -120,7 +120,7 @@ public class AuthorServiceTest {
 
     @Test
     void testDonateNotFound() {
-        boolean response = authorService.donate(IDNOTFOUND, BigDecimal.valueOf(10));
+        boolean response = authorService.donate(ID_NOT_FOUND, BigDecimal.valueOf(10));
         Assertions.assertFalse(response);
     }
 
@@ -133,7 +133,7 @@ public class AuthorServiceTest {
 
     @Test
     void testDeleteByIdNotFound() {
-        boolean response = authorService.deleteById(IDNOTFOUND);
+        boolean response = authorService.deleteById(ID_NOT_FOUND);
         Assertions.assertFalse(response);
     }
 }
