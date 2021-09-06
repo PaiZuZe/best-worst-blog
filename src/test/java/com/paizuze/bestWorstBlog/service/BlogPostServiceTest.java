@@ -3,6 +3,7 @@ package com.paizuze.bestWorstBlog.service;
 import com.paizuze.bestWorstBlog.dto.BlogPostDTO;
 import com.paizuze.bestWorstBlog.model.Author;
 import com.paizuze.bestWorstBlog.model.BlogPost;
+import com.paizuze.bestWorstBlog.repository.AuthorRepository;
 import com.paizuze.bestWorstBlog.repository.BlogPostRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +21,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class BlogPostServiceTest {
     BlogPostRepository blogPostRepository;
+    AuthorRepository authorRepository;
 
     @InjectMocks
     BlogPostService blogPostService;
@@ -29,7 +31,8 @@ public class BlogPostServiceTest {
     private final Author author2 = new Author("Bob", "Carlos Rodriguez");
     private final BlogPost blogPost = new BlogPost("Test 1", "Lorem Ipsum");
     private final BlogPost oldBlogPost = new BlogPost("Bad Title", "Lobem Ipbum");
-    private final BlogPost newBlogPost = new BlogPost("Better Title", "Lorem Ipsum");
+    private final BlogPost changedBlogPost = new BlogPost("Better Title", "Lorem Ipsum");
+    private final BlogPost newBlogPost = new BlogPost("A new post", "Some text for the new post");
 
 
     @BeforeAll
@@ -37,19 +40,24 @@ public class BlogPostServiceTest {
         this.author.setId(1L);
         this.blogPost.setId(2L);
         this.oldBlogPost.setId(3L);
-        this.newBlogPost.setId(4L);
+        this.changedBlogPost.setId(4L);
         this.author2.setId(5L);
+        this.newBlogPost.setId(6L);
         this.blogPost.setAuthor(this.author);
         this.oldBlogPost.setAuthor(this.author2);
         this.author.setBlogPosts(new HashSet<>(List.of(this.blogPost)));
         this.author2.setBlogPosts(new HashSet<>(List.of(this.oldBlogPost)));
         this.blogPostRepository = mock(BlogPostRepository.class);
+        this.authorRepository = mock(AuthorRepository.class);
 
         Mockito.when(blogPostRepository.findById(ID_NOT_FOUND)).thenReturn(Optional.empty());
         Mockito.when(blogPostRepository.findById(2L)).thenReturn(Optional.of(this.blogPost));
         Mockito.when(blogPostRepository.findById(3L)).thenReturn(Optional.of(this.oldBlogPost));
         Mockito.when(blogPostRepository.findAll()).thenReturn(List.of(this.blogPost, this.oldBlogPost));
+        Mockito.when(blogPostRepository.save(changedBlogPost)).thenReturn(changedBlogPost);
         Mockito.when(blogPostRepository.save(newBlogPost)).thenReturn(newBlogPost);
+        Mockito.when(authorRepository.findById(ID_NOT_FOUND)).thenReturn(Optional.empty());
+        Mockito.when(authorRepository.findById(1L)).thenReturn(Optional.of(this.author));
     }
 
     @BeforeEach
@@ -77,11 +85,24 @@ public class BlogPostServiceTest {
     }
 
     @Test
+    void testCreate() {
+        BlogPostDTO resp = this.blogPostService.create(1L, newBlogPost);
+        Assertions.assertEquals(1L, resp.getAuthorId());
+        verify(blogPostRepository, times(1)).save(newBlogPost);
+    }
+
+    @Test
+    void testCreateIdNotFound() {
+        BlogPostDTO resp = this.blogPostService.create(this.ID_NOT_FOUND, new BlogPost());
+        Assertions.assertNull(resp);
+    }
+
+    @Test
     void testPutById() {
-        BlogPostDTO response = blogPostService.putById(3L, newBlogPost);
+        BlogPostDTO response = blogPostService.putById(3L, this.changedBlogPost);
         Assertions.assertEquals(3L, response.getId());
         Assertions.assertEquals(this.author2.getId(), response.getAuthorId());
-        verify(blogPostRepository, times(1)).save(newBlogPost);
+        verify(blogPostRepository, times(1)).save(this.changedBlogPost);
     }
 
     @Test
