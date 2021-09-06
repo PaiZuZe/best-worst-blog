@@ -49,6 +49,7 @@ public class AuthorService {
         Optional<Author> author = authorRepository.findById(id);
         if (author.isPresent()) {
             changed_author.setId(author.get().getId());
+            changed_author.setBalance(author.get().getBalance());
             return authorRepository.save(changed_author).toAuthorDTO();
         }
         else {

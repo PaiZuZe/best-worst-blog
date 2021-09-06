@@ -18,6 +18,7 @@ public class BlogPost implements Serializable {
     private Long id;
 
     private String title;
+    @Column(length = 4000)
     private String textBody;
 
     @ManyToOne
