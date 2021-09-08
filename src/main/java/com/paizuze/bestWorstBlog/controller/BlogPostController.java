@@ -39,14 +39,24 @@ public class BlogPostController {
 
     @PostMapping
     public ResponseEntity<BlogPostDTO> create(@RequestBody BlogPostDTO newBlogPost) {
-        BlogPostDTO resp = blogPostService.create(newBlogPost.getAuthorId(), newBlogPost.toBlogPost());
-        return resp != null ? new ResponseEntity<>(resp, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.CONFLICT);
+        try {
+            BlogPostDTO resp = blogPostService.create(newBlogPost.getAuthorId(), newBlogPost.toBlogPost());
+            return resp != null ? new ResponseEntity<>(resp, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        catch (Exception err) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<BlogPostDTO> putById(@PathVariable long id, @RequestBody BlogPostDTO changed_blogPost) {
-        BlogPostDTO resp = blogPostService.putById(id, changed_blogPost.toBlogPost());
-        return resp != null ? new ResponseEntity<>(resp, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        try {
+            BlogPostDTO resp = blogPostService.putById(id, changed_blogPost.toBlogPost());
+            return resp != null ? new ResponseEntity<>(resp, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (Exception err) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/{id}")

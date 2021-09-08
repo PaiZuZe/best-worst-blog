@@ -45,15 +45,24 @@ public class AuthorController {
 
     @PostMapping
     public ResponseEntity<AuthorDTO> post(@RequestBody AuthorDTO new_author) {
-        AuthorDTO resp = authorService.create(new_author.toAuthor());
-        return resp != null ? new ResponseEntity<>(resp, HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
+        try {
+            AuthorDTO resp = authorService.create(new_author.toAuthor());
+            return new ResponseEntity<>(resp, HttpStatus.CREATED);
+        }
+        catch (Exception err) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<AuthorDTO> putById(@PathVariable long id, @RequestBody AuthorDTO changed_author) {
-        AuthorDTO resp = authorService.putById(id, changed_author.toAuthor());
-        return resp != null ? new ResponseEntity<>(resp, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        try {
+            AuthorDTO resp = authorService.putById(id, changed_author.toAuthor());
+            return resp != null ? new ResponseEntity<>(resp, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (Exception err) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/{id}")
