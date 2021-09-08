@@ -7,7 +7,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "blogPosts")
+@Table(name = "blogPosts", uniqueConstraints = {@UniqueConstraint(columnNames = {"author", "title"})})
 public class BlogPost implements Serializable {
 
     @Serial
@@ -22,6 +22,7 @@ public class BlogPost implements Serializable {
     private String textBody;
 
     @ManyToOne
+    @JoinColumn(name="author")
     private Author author;
 
     public BlogPost() {

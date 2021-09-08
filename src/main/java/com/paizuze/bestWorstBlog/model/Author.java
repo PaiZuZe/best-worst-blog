@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "authors")
+@Table(name = "authors", uniqueConstraints = {@UniqueConstraint(columnNames = {"firstName", "lastName"})})
 public class Author implements Serializable {
 
     @Serial
