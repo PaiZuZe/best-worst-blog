@@ -25,6 +25,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String token;
         String header = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
+        httpServletResponse.addHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "Authorization");
         if (header == null || !header.startsWith("Bearer: ")) {
             token = null;
         }
@@ -33,9 +34,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
         try {
             if (token != null && jwtTokenUtil.validateToken(token)) {
-                System.out.println("Bruuh IN");
                 Authentication authentication = jwtTokenUtil.getAuthentication(token);
-                System.out.println("Bruuh OUT");
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
