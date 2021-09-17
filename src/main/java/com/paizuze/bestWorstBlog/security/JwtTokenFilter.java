@@ -1,5 +1,6 @@
 package com.paizuze.bestWorstBlog.security;
 
+import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -37,6 +38,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 Authentication authentication = jwtTokenUtil.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
+        }
+        catch (JwtException e) {
+            SecurityContextHolder.clearContext();
+            httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
+            return;
         }
         catch (Exception e) {
             SecurityContextHolder.clearContext();

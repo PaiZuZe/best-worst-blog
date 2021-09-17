@@ -6,6 +6,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -25,13 +26,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception{
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        http.cors().configurationSource(corsConfigurationSource());
+        http.csrf().disable();
+
         http.authorizeRequests()
                 .mvcMatchers(HttpMethod.GET, "/api/**").permitAll()
                 .mvcMatchers(HttpMethod.POST, "/api/author").permitAll()
                 .mvcMatchers("/api/login").permitAll()
                 .anyRequest().authenticated();
-        http.cors().configurationSource(corsConfigurationSource()).and()
-                .csrf().disable();
+
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 

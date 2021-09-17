@@ -53,7 +53,6 @@ public class JwtTokenUtil {
             return true;
         }
         catch (JwtException | IllegalArgumentException e) {
-            System.out.println(e.getMessage());
             throw e;
         }
     }
