@@ -3,7 +3,6 @@ package com.paizuze.bestWorstBlog.controller;
 import com.paizuze.bestWorstBlog.dto.AuthorDTO;
 import com.paizuze.bestWorstBlog.dto.BlogPostDTO;
 import com.paizuze.bestWorstBlog.service.AuthorService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -18,8 +17,11 @@ import java.util.Set;
 @RequestMapping("/api/author")
 public class AuthorController {
 
-    @Autowired
-    private AuthorService authorService;
+    private final AuthorService authorService;
+
+    public AuthorController(AuthorService authorService) {
+        this.authorService = authorService;
+    }
 
     @GetMapping("/pages")
     public ResponseEntity<Page<AuthorDTO>> getPage(Pageable pageable) {

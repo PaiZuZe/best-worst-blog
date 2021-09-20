@@ -41,8 +41,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
         catch (JwtException e) {
             SecurityContextHolder.clearContext();
-            httpServletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
-            return;
         }
         catch (Exception e) {
             SecurityContextHolder.clearContext();

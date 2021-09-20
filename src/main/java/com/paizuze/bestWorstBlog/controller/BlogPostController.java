@@ -2,7 +2,6 @@ package com.paizuze.bestWorstBlog.controller;
 
 import com.paizuze.bestWorstBlog.dto.BlogPostDTO;
 import com.paizuze.bestWorstBlog.service.BlogPostService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -16,8 +15,11 @@ import java.util.List;
 @RequestMapping("/api/blogPost")
 public class BlogPostController {
 
-    @Autowired
-    private BlogPostService blogPostService;
+    private final BlogPostService blogPostService;
+
+    public BlogPostController(BlogPostService blogPostService) {
+        this.blogPostService = blogPostService;
+    }
 
     @GetMapping("/pages")
     public ResponseEntity<Page<BlogPostDTO>> getPage(Pageable pageable) {

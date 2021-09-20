@@ -3,7 +3,6 @@ package com.paizuze.bestWorstBlog.security;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,13 +16,17 @@ import java.util.Date;
 @Component
 public class JwtTokenUtil {
 
-    @Autowired
-    CustomUserDetailsService customUserDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Value("${jwt.secret}")
     private String secret;
 
-    private final int ALIVE_TIME = 3600;
+    @Value("${jwt.VALID_TIME}")
+    private long ALIVE_TIME;
+
+    public JwtTokenUtil(CustomUserDetailsService customUserDetailsService) {
+        this.customUserDetailsService = customUserDetailsService;
+    }
 
     @PostConstruct
     protected void init() {
@@ -35,9 +38,9 @@ public class JwtTokenUtil {
 
         return Jwts.builder()
                 .setSubject("Bob")
-                .setIssuer("Eu mesmo tio")
+                .setIssuer("bestWorstBlogAPI")
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + ALIVE_TIME * 1000))
+                .setExpiration(new Date(now.getTime() + ALIVE_TIME * 1000L))
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }

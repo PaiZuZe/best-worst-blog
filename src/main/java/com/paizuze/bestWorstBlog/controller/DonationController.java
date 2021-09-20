@@ -3,7 +3,6 @@ package com.paizuze.bestWorstBlog.controller;
 import com.paizuze.bestWorstBlog.dto.DonationDTO;
 import com.paizuze.bestWorstBlog.model.Donation;
 import com.paizuze.bestWorstBlog.service.DonationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +13,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/donate")
 public class DonationController {
-    @Autowired
-    private DonationService donationService;
+    private final DonationService donationService;
+
+    public DonationController(DonationService donationService) {
+        this.donationService = donationService;
+    }
 
     @GetMapping
     public ResponseEntity<List<DonationDTO>> getAll() {
