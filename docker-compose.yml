@@ -12,7 +12,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/bestWorstBlog
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=create
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     command: sh -c 'while ! nc -z db 5432; do sleep 1; done; java -jar /app.jar'
   db:
     image: "postgres:13-alpine"
@@ -22,3 +22,7 @@ services:
       - POSTGRES_DB=bestWorstBlog
     ports: 
       - "5432:5432"
+    volumes:
+      - bwb-db:/var/lib/postgresql/data
+volumes:
+  bwb-db:
