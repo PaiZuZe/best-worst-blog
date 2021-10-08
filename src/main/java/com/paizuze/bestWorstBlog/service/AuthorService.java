@@ -1,7 +1,5 @@
 package com.paizuze.bestWorstBlog.service;
 
-import com.paizuze.bestWorstBlog.dto.AuthorDTO;
-import com.paizuze.bestWorstBlog.dto.BlogPostDTO;
 import com.paizuze.bestWorstBlog.model.Author;
 import com.paizuze.bestWorstBlog.model.BlogPost;
 import com.paizuze.bestWorstBlog.repository.AuthorRepository;
@@ -13,7 +11,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class AuthorService {
@@ -23,34 +20,34 @@ public class AuthorService {
         this.authorRepository = authorRepository;
     }
 
-    public Page<AuthorDTO> getPage(Pageable pageable) {
-        return authorRepository.findAll(pageable).map(Author::toAuthorDTO);
+    public Page<Author> getPage(Pageable pageable) {
+        return authorRepository.findAll(pageable);
     }
 
-    public List<AuthorDTO> getAll() {
-        return authorRepository.findAll().stream().map(Author::toAuthorDTO).collect(Collectors.toList());
+    public List<Author> getAll() {
+        return authorRepository.findAll();
     }
 
-    public AuthorDTO getById(long id) {
+    public Author getById(long id) {
         Optional<Author> author = authorRepository.findById(id);
-        return author.isPresent() ? author.get().toAuthorDTO() : null;
+        return author.orElse(null);
     }
 
-    public Set<BlogPostDTO> getAuthorsBlogPosts(long id) {
+    public Set<BlogPost> getAuthorsBlogPosts(long id) {
         Optional<Author> author = authorRepository.findById(id);
-        return author.isPresent() ? author.get().getBlogPosts().stream().map(BlogPost::toBlogPostDTO).collect(Collectors.toSet()) : null;
+        return author.isPresent() ? author.get().getBlogPosts() : null;
     }
 
-    public AuthorDTO create(Author new_author) {
-        return authorRepository.save(new_author).toAuthorDTO();
+    public Author create(Author new_author) {
+        return authorRepository.save(new_author);
     }
 
-    public AuthorDTO putById(long id, Author changed_author) {
+    public Author putById(long id, Author changed_author) {
         Optional<Author> author = authorRepository.findById(id);
         if (author.isPresent()) {
             changed_author.setId(author.get().getId());
             changed_author.setBalance(author.get().getBalance());
-            return authorRepository.save(changed_author).toAuthorDTO();
+            return authorRepository.save(changed_author);
         }
         else {
             return null;

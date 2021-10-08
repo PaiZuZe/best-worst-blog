@@ -1,7 +1,5 @@
 package com.paizuze.bestWorstBlog.service;
 
-import com.paizuze.bestWorstBlog.dto.AuthorDTO;
-import com.paizuze.bestWorstBlog.dto.BlogPostDTO;
 import com.paizuze.bestWorstBlog.model.Author;
 import com.paizuze.bestWorstBlog.model.BlogPost;
 import com.paizuze.bestWorstBlog.repository.AuthorRepository;
@@ -61,33 +59,33 @@ public class AuthorServiceTest {
 
     @Test
     void testGetAll() {
-        List<AuthorDTO> response = authorService.getAll();
+        List<Author> response = authorService.getAll();
         Assertions.assertEquals(2, response.size());
     }
 
     @Test
     void testGetById() {
-        AuthorDTO response = authorService.getById(1L);
+        Author response = authorService.getById(1L);
         Assertions.assertEquals("Bob", response.getFirstName());
         Assertions.assertEquals("Maximilliam Gustav III", response.getLastName());
-        Assertions.assertEquals(new BigDecimal("0.0").toString(), response.getBalance());
+        Assertions.assertEquals(new BigDecimal("0.0").doubleValue(), response.getBalance().doubleValue());
     }
 
     @Test
     void testGetByIdNotFound() {
-        AuthorDTO response = authorService.getById(ID_NOT_FOUND);
+        Author response = authorService.getById(ID_NOT_FOUND);
         Assertions.assertNull(response);
     }
 
     @Test
     void testGetAuthorsBlogPosts() {
-        Set<BlogPostDTO> response = authorService.getAuthorsBlogPosts(1L);
+        Set<BlogPost> response = authorService.getAuthorsBlogPosts(1L);
         Assertions.assertEquals(2, response.size());
     }
 
     @Test
     void testGetAuthorsBlogPostsNotFound() {
-        Set<BlogPostDTO> response = authorService.getAuthorsBlogPosts(ID_NOT_FOUND);
+        Set<BlogPost> response = authorService.getAuthorsBlogPosts(ID_NOT_FOUND);
         Assertions.assertNull(response);
     }
 
@@ -99,14 +97,14 @@ public class AuthorServiceTest {
 
     @Test
     void testPutById() {
-        AuthorDTO response = authorService.putById(2L, this.newAuthor);
+        Author response = authorService.putById(2L, this.newAuthor);
         Assertions.assertEquals(2L, response.getId());
         verify(authorRepository, times(1)).save(this.newAuthor);
     }
 
     @Test
     void testPutByIdNotFound() {
-        AuthorDTO response = authorService.putById(ID_NOT_FOUND, new Author());
+        Author response = authorService.putById(ID_NOT_FOUND, new Author());
         Assertions.assertNull(response);
     }
 

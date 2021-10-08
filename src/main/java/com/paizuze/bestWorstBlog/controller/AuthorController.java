@@ -2,6 +2,8 @@ package com.paizuze.bestWorstBlog.controller;
 
 import com.paizuze.bestWorstBlog.dto.AuthorDTO;
 import com.paizuze.bestWorstBlog.dto.BlogPostDTO;
+import com.paizuze.bestWorstBlog.model.Author;
+import com.paizuze.bestWorstBlog.model.BlogPost;
 import com.paizuze.bestWorstBlog.service.AuthorService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -25,31 +28,31 @@ public class AuthorController {
 
     @GetMapping("/pages")
     public ResponseEntity<Page<AuthorDTO>> getPage(Pageable pageable) {
-        return new ResponseEntity<>(authorService.getPage(pageable), HttpStatus.OK);
+        return new ResponseEntity<>(authorService.getPage(pageable).map(AuthorDTO::new), HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<List<AuthorDTO>> getAll() {
-        return new ResponseEntity<>(authorService.getAll(), HttpStatus.OK);
+        return new ResponseEntity<>(authorService.getAll().stream().map(AuthorDTO::new).collect(Collectors.toList()), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<AuthorDTO> getById(@PathVariable long id) {
-        AuthorDTO resp = authorService.getById(id);
-        return resp != null ? new ResponseEntity<>(resp, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Author resp = authorService.getById(id);
+        return resp != null ? new ResponseEntity<>(new AuthorDTO(resp), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/{id}/blogPosts")
     public ResponseEntity<Set<BlogPostDTO>> getAuthorsBlogPosts(@PathVariable long id) {
-        Set<BlogPostDTO> resp =  authorService.getAuthorsBlogPosts(id);
-        return resp != null ? new ResponseEntity<>(resp, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Set<BlogPost> resp =  authorService.getAuthorsBlogPosts(id);
+        return resp != null ? new ResponseEntity<>(resp.stream().map(BlogPostDTO::new).collect(Collectors.toSet()), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping
     public ResponseEntity<AuthorDTO> post(@RequestBody AuthorDTO new_author) {
         try {
-            AuthorDTO resp = authorService.create(new_author.toAuthor());
-            return new ResponseEntity<>(resp, HttpStatus.CREATED);
+            Author resp = authorService.create(new Author(new_author));
+            return new ResponseEntity<>(new AuthorDTO(resp), HttpStatus.CREATED);
         }
         catch (Exception err) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -59,8 +62,8 @@ public class AuthorController {
     @PutMapping("/{id}")
     public ResponseEntity<AuthorDTO> putById(@PathVariable long id, @RequestBody AuthorDTO changed_author) {
         try {
-            AuthorDTO resp = authorService.putById(id, changed_author.toAuthor());
-            return resp != null ? new ResponseEntity<>(resp, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            Author resp = authorService.putById(id, new Author(changed_author));
+            return resp != null ? new ResponseEntity<>(new AuthorDTO(resp), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         catch (Exception err) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
