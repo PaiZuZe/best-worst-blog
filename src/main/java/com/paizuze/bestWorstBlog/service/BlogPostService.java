@@ -1,6 +1,5 @@
 package com.paizuze.bestWorstBlog.service;
 
-import com.paizuze.bestWorstBlog.dto.BlogPostDTO;
 import com.paizuze.bestWorstBlog.model.Author;
 import com.paizuze.bestWorstBlog.model.BlogPost;
 import com.paizuze.bestWorstBlog.repository.AuthorRepository;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class BlogPostService {
@@ -23,34 +21,34 @@ public class BlogPostService {
         this.blogPostRepository = blogPostRepository;
     }
 
-    public Page<BlogPostDTO> getPage(Pageable pageable) {
-        return blogPostRepository.findAll(pageable).map(BlogPost::toBlogPostDTO);
+    public Page<BlogPost> getPage(Pageable pageable) {
+        return blogPostRepository.findAll(pageable);
     }
 
-    public List<BlogPostDTO> getAll() {
-        return blogPostRepository.findAll().stream().map(BlogPost::toBlogPostDTO).collect(Collectors.toList());
+    public List<BlogPost> getAll() {
+        return blogPostRepository.findAll();
     }
 
-    public BlogPostDTO getById(long id) {
+    public BlogPost getById(long id) {
         Optional<BlogPost> blogPost = blogPostRepository.findById(id);
-        return blogPost.isPresent() ? blogPost.get().toBlogPostDTO() : null;
+        return blogPost.orElse(null);
     }
 
-    public BlogPostDTO create(long author_id, BlogPost newBlogPost) {
+    public BlogPost create(long author_id, BlogPost newBlogPost) {
         Optional<Author> author = authorRepository.findById(author_id);
         if (author.isEmpty()) {
             return null;
         }
         newBlogPost.setAuthor(author.get());
-        return blogPostRepository.save(newBlogPost).toBlogPostDTO();
+        return blogPostRepository.save(newBlogPost);
     }
 
-    public BlogPostDTO putById(long id, BlogPost changed_blogPost) {
+    public BlogPost putById(long id, BlogPost changed_blogPost) {
         Optional<BlogPost> blogPost = blogPostRepository.findById(id);
         if (blogPost.isPresent()) {
             changed_blogPost.setId(blogPost.get().getId());
             changed_blogPost.setAuthor(blogPost.get().getAuthor());
-            return blogPostRepository.save(changed_blogPost).toBlogPostDTO();
+            return blogPostRepository.save(changed_blogPost);
         }
         else {
             return null;

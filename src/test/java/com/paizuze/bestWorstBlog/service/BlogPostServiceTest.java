@@ -1,6 +1,5 @@
 package com.paizuze.bestWorstBlog.service;
 
-import com.paizuze.bestWorstBlog.dto.BlogPostDTO;
 import com.paizuze.bestWorstBlog.model.Author;
 import com.paizuze.bestWorstBlog.model.BlogPost;
 import com.paizuze.bestWorstBlog.repository.AuthorRepository;
@@ -67,47 +66,47 @@ public class BlogPostServiceTest {
 
     @Test
     void testGetAll() {
-        List<BlogPostDTO> response = blogPostService.getAll();
+        List<BlogPost> response = blogPostService.getAll();
         Assertions.assertEquals(2, response.size());
     }
 
     @Test
     void testGetById() {
-        BlogPostDTO response = blogPostService.getById(2L);
+        BlogPost response = blogPostService.getById(2L);
         Assertions.assertEquals("Test 1", response.getTitle());
         Assertions.assertEquals("Lorem Ipsum", response.getTextBody());
     }
 
     @Test
     void testByIdNotFound() {
-        BlogPostDTO response = blogPostService.getById(ID_NOT_FOUND);
+        BlogPost response = blogPostService.getById(ID_NOT_FOUND);
         Assertions.assertNull(response);
     }
 
     @Test
     void testCreate() {
-        BlogPostDTO resp = this.blogPostService.create(1L, newBlogPost);
-        Assertions.assertEquals(1L, resp.getAuthorId());
+        BlogPost resp = this.blogPostService.create(1L, newBlogPost);
+        Assertions.assertEquals(1L, resp.getAuthor().getId());
         verify(blogPostRepository, times(1)).save(newBlogPost);
     }
 
     @Test
     void testCreateIdNotFound() {
-        BlogPostDTO resp = this.blogPostService.create(this.ID_NOT_FOUND, new BlogPost());
+        BlogPost resp = this.blogPostService.create(this.ID_NOT_FOUND, new BlogPost());
         Assertions.assertNull(resp);
     }
 
     @Test
     void testPutById() {
-        BlogPostDTO response = blogPostService.putById(3L, this.changedBlogPost);
+        BlogPost response = blogPostService.putById(3L, this.changedBlogPost);
         Assertions.assertEquals(3L, response.getId());
-        Assertions.assertEquals(this.author2.getId(), response.getAuthorId());
+        Assertions.assertEquals(this.author2.getId(), response.getAuthor().getId());
         verify(blogPostRepository, times(1)).save(this.changedBlogPost);
     }
 
     @Test
     void testPutByIdNotFound() {
-        BlogPostDTO response = blogPostService.putById(ID_NOT_FOUND, new BlogPost());
+        BlogPost response = blogPostService.putById(ID_NOT_FOUND, new BlogPost());
         Assertions.assertNull(response);
     }
 
