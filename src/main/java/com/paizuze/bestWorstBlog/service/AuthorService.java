@@ -35,7 +35,7 @@ public class AuthorService {
 
     public Set<BlogPost> getAuthorsBlogPosts(long id) {
         Optional<Author> author = authorRepository.findById(id);
-        return author.isPresent() ? author.get().getBlogPosts() : null;
+        return author.map(Author::getBlogPosts).orElse(null);
     }
 
     public Author create(Author new_author) {
@@ -75,5 +75,9 @@ public class AuthorService {
         else {
             return false;
         }
+    }
+
+    public List<Author> findAuthorByFullName(String fullName) {
+        return this.authorRepository.findAuthorByFullName(fullName);
     }
 }

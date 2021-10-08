@@ -75,4 +75,10 @@ public class AuthorController {
         boolean resp = authorService.deleteById(id);
         return resp ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @GetMapping("/bah")
+    public ResponseEntity<List<AuthorDTO>> findByFullName(@RequestParam("name") String fullName) {
+        List<Author> authors = this.authorService.findAuthorByFullName(fullName);
+        return new ResponseEntity<>(authors.stream().map(AuthorDTO::new).collect(Collectors.toList()), HttpStatus.OK);
+    }
 }
