@@ -1,6 +1,5 @@
 package com.paizuze.bestWorstBlog.service;
 
-import com.paizuze.bestWorstBlog.dto.DonationDTO;
 import com.paizuze.bestWorstBlog.model.Author;
 import com.paizuze.bestWorstBlog.model.Donation;
 import com.paizuze.bestWorstBlog.repository.AuthorRepository;
@@ -60,33 +59,33 @@ public class DonationServiceTest {
 
     @Test
     void testGetAll() {
-        List<DonationDTO> resp = this.donationService.getAll();
+        List<Donation> resp = this.donationService.getAll();
         Assertions.assertEquals(1, resp.size());
     }
 
     @Test
     void testGet() {
-        DonationDTO resp = this.donationService.get(2L);
-        Assertions.assertEquals(1L, resp.getAuthorId());
-        Assertions.assertEquals(BigDecimal.valueOf(10L), resp.getDonationAmount());
+        Donation resp = this.donationService.get(2L);
+        Assertions.assertEquals(1L, resp.getAuthor().getId());
+        Assertions.assertEquals(BigDecimal.valueOf(10L), resp.getAmount());
     }
 
     @Test
     void testGetIdNotFound() {
-        DonationDTO resp = this.donationService.get(this.ID_NOT_FOUND);
+        Donation resp = this.donationService.get(this.ID_NOT_FOUND);
         Assertions.assertNull(resp);
     }
 
     @Test
     void testPost() {
-        DonationDTO resp = this.donationService.post(1L, this.newDonation);
-        Assertions.assertEquals(this.author.getId(), resp.getAuthorId());
+        Donation resp = this.donationService.post(1L, this.newDonation);
+        Assertions.assertEquals(this.author.getId(), resp.getAuthor().getId());
         verify(donationRepository, times(1)).save(this.newDonation);
     }
 
     @Test
     void testPostIdNotFound() {
-        DonationDTO resp = this.donationService.post(this.ID_NOT_FOUND, new Donation());
+        Donation resp = this.donationService.post(this.ID_NOT_FOUND, new Donation());
         Assertions.assertNull(resp);
     }
 }

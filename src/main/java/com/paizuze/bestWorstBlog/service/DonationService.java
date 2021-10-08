@@ -1,6 +1,5 @@
 package com.paizuze.bestWorstBlog.service;
 
-import com.paizuze.bestWorstBlog.dto.DonationDTO;
 import com.paizuze.bestWorstBlog.model.Author;
 import com.paizuze.bestWorstBlog.model.Donation;
 import com.paizuze.bestWorstBlog.repository.AuthorRepository;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class DonationService {
@@ -23,22 +21,22 @@ public class DonationService {
         this.authorService = authorService;
     }
 
-    public List<DonationDTO> getAll() {
-        return this.donationRepository.findAll().stream().map(Donation::toDTO).collect(Collectors.toList());
+    public List<Donation> getAll() {
+        return this.donationRepository.findAll();
     }
 
-    public DonationDTO get(Long id) {
+    public Donation get(Long id) {
         Optional<Donation> donation = this.donationRepository.findById(id);
-        return donation.isPresent() ? donation.get().toDTO() : null;
+        return donation.orElse(null);
     }
 
-    public DonationDTO post(Long authorId, Donation donation) {
+    public Donation post(Long authorId, Donation donation) {
         Optional<Author> author = this.authorRepository.findById(authorId);
         if (author.isEmpty()) {
             return null;
         }
         authorService.donate(authorId, donation.getAmount());
         donation.setAuthor(author.get());
-        return this.donationRepository.save(donation).toDTO();
+        return this.donationRepository.save(donation);
     }
 }
