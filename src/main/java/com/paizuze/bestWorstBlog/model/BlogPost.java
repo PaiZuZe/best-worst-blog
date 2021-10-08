@@ -1,11 +1,15 @@
 package com.paizuze.bestWorstBlog.model;
 
 import com.paizuze.bestWorstBlog.dto.BlogPostDTO;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "blogPosts", uniqueConstraints = {@UniqueConstraint(columnNames = {"author", "title"})})
 public class BlogPost implements Serializable {
@@ -25,8 +29,7 @@ public class BlogPost implements Serializable {
     @JoinColumn(name="author")
     private Author author;
 
-    public BlogPost() {
-    }
+    public BlogPost() {}
 
     public BlogPost(String title, String textBody) {
         this();
@@ -34,61 +37,9 @@ public class BlogPost implements Serializable {
         this.setTextBody(textBody);
     }
 
-    public BlogPostDTO toBlogPostDTO() {
-        BlogPostDTO dto = new BlogPostDTO();
-        dto.setId(this.getId());
-        dto.setTitle(this.getTitle());
-        dto.setTextBody(this.getTextBody());
-        dto.setAuthorId(this.getAuthor().getId());
-        return dto;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String tittle) {
-        this.title = tittle;
-    }
-
-    public String getTextBody() {
-        return textBody;
-    }
-
-    public void setTextBody(String textBody) {
-        this.textBody = textBody;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (obj.getClass() != this.getClass()) {
-            return false;
-        }
-        BlogPost blogPost = (BlogPost) obj;
-        return blogPost.getId().longValue() == this.getId().longValue();
-    }
-
-    @Override
-    public int hashCode() {
-        return this.getId() != null ? this.getId().hashCode() : 0;
-    }
-
-    public Author getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(Author author) {
-        this.author = author;
+    public BlogPost(BlogPostDTO blogPostDTO) {
+        this();
+        this.setTitle(blogPostDTO.getTitle());
+        this.setTextBody(blogPostDTO.getTextBody());
     }
 }

@@ -2,46 +2,25 @@ package com.paizuze.bestWorstBlog.dto;
 
 
 import com.paizuze.bestWorstBlog.model.Author;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.math.BigDecimal;
+@Getter
+@Setter
 public class AuthorDTO {
     private Long id;
     private String firstName;
     private String lastName;
-    private String balance = "0.0";
+    private BigDecimal balance;
 
-    public Author toAuthor() {
-        return new Author(this.getFirstName(), this.getLastName(), this.getBalance());
-    }
+    public AuthorDTO(){}
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getBalance() {
-        return balance;
-    }
-
-    public void setBalance(String balance) {
-        this.balance = balance;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public AuthorDTO(Author author) {
+        this();
+        this.setId(author.getId());
+        this.setFirstName(author.getFirstName());
+        this.setLastName(author.getLastName());
+        this.setBalance(author.getBalance());
     }
 }

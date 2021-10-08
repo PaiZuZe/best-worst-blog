@@ -2,6 +2,8 @@ package com.paizuze.bestWorstBlog.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.paizuze.bestWorstBlog.dto.AuthorDTO;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serial;
@@ -10,6 +12,8 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "authors", uniqueConstraints = {@UniqueConstraint(columnNames = {"firstName", "lastName"})})
 public class Author implements Serializable {
@@ -36,6 +40,7 @@ public class Author implements Serializable {
     public Author() {
         this.setBalance(new BigDecimal("0.0"));
         this.setBlogPosts(new HashSet<>());
+        this.setDonations(new HashSet<>());
     }
 
     public Author(String firstName, String lastName) {
@@ -49,77 +54,9 @@ public class Author implements Serializable {
         this.setBalance(new BigDecimal(balance));
     }
 
-    public AuthorDTO toAuthorDTO(){
-        AuthorDTO dto = new AuthorDTO();
-        dto.setBalance(this.getBalance().toString());
-        dto.setFirstName(this.getFirstName());
-        dto.setLastName(this.getLastName());
-        dto.setId(this.getId());
-        return dto;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (obj.getClass() != this.getClass()) {
-            return false;
-        }
-        Author author = (Author) obj;
-        return author.getId().longValue() == this.getId().longValue();
-    }
-
-    @Override
-    public int hashCode() {
-        return this.getId() != null ? this.getId().hashCode() : 0;
-    }
-
-    public Set<BlogPost> getBlogPosts() {
-        return blogPosts;
-    }
-
-    public void setBlogPosts(Set<BlogPost> blogPosts) {
-        this.blogPosts = blogPosts;
-    }
-
-    public Set<Donation> getDonations() {
-        return donations;
-    }
-
-    public void setDonations(Set<Donation> donations) {
-        this.donations = donations;
-    }
-
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
+    public Author(AuthorDTO authorDTO) {
+        this();
+        this.setFirstName(authorDTO.getFirstName());
+        this.setLastName(authorDTO.getLastName());
     }
 }
