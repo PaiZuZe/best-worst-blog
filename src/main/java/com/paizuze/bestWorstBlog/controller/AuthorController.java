@@ -48,6 +48,12 @@ public class AuthorController {
         return resp != null ? new ResponseEntity<>(resp.stream().map(BlogPostDTO::new).collect(Collectors.toSet()), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping("/fullname")
+    public ResponseEntity<List<AuthorDTO>> findByFullName(@RequestParam("fullName") String fullName) {
+        List<Author> authors = this.authorService.findAuthorByFullName(fullName);
+        return new ResponseEntity<>(authors.stream().map(AuthorDTO::new).collect(Collectors.toList()), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<AuthorDTO> post(@RequestBody AuthorDTO new_author) {
         try {
@@ -74,11 +80,5 @@ public class AuthorController {
     public ResponseEntity<?> deleteById(@PathVariable long id){
         boolean resp = authorService.deleteById(id);
         return resp ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @GetMapping("/bah")
-    public ResponseEntity<List<AuthorDTO>> findByFullName(@RequestParam("name") String fullName) {
-        List<Author> authors = this.authorService.findAuthorByFullName(fullName);
-        return new ResponseEntity<>(authors.stream().map(AuthorDTO::new).collect(Collectors.toList()), HttpStatus.OK);
     }
 }
