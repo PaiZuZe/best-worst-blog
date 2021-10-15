@@ -57,6 +57,9 @@ public class BlogPostServiceTest {
         Mockito.when(blogPostRepository.save(newBlogPost)).thenReturn(newBlogPost);
         Mockito.when(authorRepository.findById(ID_NOT_FOUND)).thenReturn(Optional.empty());
         Mockito.when(authorRepository.findById(1L)).thenReturn(Optional.of(this.author));
+        Mockito.when(blogPostRepository.existsById(2L)).thenReturn(true);
+        Mockito.when(blogPostRepository.existsById(ID_NOT_FOUND)).thenReturn(false);
+
     }
 
     @BeforeEach

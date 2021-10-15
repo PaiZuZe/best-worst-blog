@@ -50,6 +50,8 @@ public class AuthorServiceTest {
         Mockito.when(authorRepository.findAll()).thenReturn(List.of(this.author, this.oldAuthor));
         Mockito.when(authorRepository.save(this.author)).thenReturn(this.author);
         Mockito.when(authorRepository.save(this.newAuthor)).thenReturn(this.newAuthor);
+        Mockito.when(authorRepository.existsById(1L)).thenReturn(true);
+        Mockito.when(authorRepository.existsById(ID_NOT_FOUND)).thenReturn(false);
     }
 
     @BeforeEach

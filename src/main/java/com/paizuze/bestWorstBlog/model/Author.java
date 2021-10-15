@@ -49,11 +49,6 @@ public class Author implements Serializable {
         this.setLastName(lastName);
     }
 
-    public Author(String firstName, String lastName, String balance) {
-        this(firstName, lastName);
-        this.setBalance(new BigDecimal(balance));
-    }
-
     public Author(AuthorDTO authorDTO) {
         this();
         this.setFirstName(authorDTO.getFirstName());

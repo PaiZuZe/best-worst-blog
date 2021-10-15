@@ -36,11 +36,11 @@ public class BlogPostService {
 
     public BlogPost create(long author_id, BlogPost newBlogPost) {
         Optional<Author> author = authorRepository.findById(author_id);
-        if (author.isEmpty()) {
-            return null;
+        if (author.isPresent()) {
+            newBlogPost.setAuthor(author.get());
+            return blogPostRepository.save(newBlogPost);
         }
-        newBlogPost.setAuthor(author.get());
-        return blogPostRepository.save(newBlogPost);
+        return null;
     }
 
     public BlogPost putById(long id, BlogPost changed_blogPost) {
@@ -50,19 +50,14 @@ public class BlogPostService {
             changed_blogPost.setAuthor(blogPost.get().getAuthor());
             return blogPostRepository.save(changed_blogPost);
         }
-        else {
-            return null;
-        }
+        return null;
     }
 
     public boolean deleteById(long id) {
-        Optional<BlogPost> blogPost = blogPostRepository.findById(id);
-        if (blogPost.isPresent()) {
+        if (blogPostRepository.existsById(id)) {
             blogPostRepository.deleteById(id);
             return true;
         }
-        else {
-            return false;
-        }
+        return false;
     }
 }

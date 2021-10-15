@@ -28,6 +28,10 @@ public class AuthorService {
         return authorRepository.findAll();
     }
 
+    public List<Author> findAuthorByFullName(String fullName) {
+        return this.authorRepository.findAuthorByFullName(fullName);
+    }
+
     public Author getById(long id) {
         Optional<Author> author = authorRepository.findById(id);
         return author.orElse(null);
@@ -46,23 +50,19 @@ public class AuthorService {
         Optional<Author> author = authorRepository.findById(id);
         if (author.isPresent()) {
             changed_author.setId(author.get().getId());
+            changed_author.setDonations(author.get().getDonations());
             changed_author.setBalance(author.get().getBalance());
             return authorRepository.save(changed_author);
         }
-        else {
-            return null;
-        }
+        return null;
     }
 
     public boolean deleteById(long id){
-        Optional<Author> author = authorRepository.findById(id);
-        if (author.isPresent()) {
+        if (authorRepository.existsById(id)) {
             authorRepository.deleteById(id);
             return true;
         }
-        else {
-            return false;
-        }
+        return false;
     }
 
     public boolean donate(long id, BigDecimal donation_amount){
@@ -72,12 +72,7 @@ public class AuthorService {
             authorRepository.save(author.get());
             return true;
         }
-        else {
-            return false;
-        }
+        return false;
     }
 
-    public List<Author> findAuthorByFullName(String fullName) {
-        return this.authorRepository.findAuthorByFullName(fullName);
-    }
 }
